@@ -3,10 +3,10 @@
   "version": "1.1.0",
   "description": "",
   "main": "index.js",
-  "homepage": "https://anamanoilo.github.io/js-team-project-demo",
+  "homepage": "https://anamanoilo.github.io/js-team-project",
   "scripts": {
     "dev": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /js-team-project-demo/"
+    "build": "parcel build src/*.html --public-url /js-team-project/"
   },
   "repository": {
     "type": "git",
