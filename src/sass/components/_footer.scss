@@ -3,6 +3,7 @@ background-color: #f7f7f7;
 height: 100px;
 padding: 30px 0;
 
+
 @include mq(tablet){
     br{display: none;}
     height: 80px;
@@ -42,4 +43,13 @@ padding: 30px 0;
 &__underline{
     text-decoration: underline;
 }
+}
+
+.bottom__text{
+    display: block;
+    margin-top: 10px;
+    @include mq(tablet){
+        margin: 0;
+        display: inline;
+    }
 }
