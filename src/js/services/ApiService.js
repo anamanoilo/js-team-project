@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as storage from './localStorage';
 
 axios.defaults.baseURL = 'https://api.themoviedb.org/3';
 
@@ -7,6 +8,10 @@ class ApiService {
   page = 1;
   movieId = 0;
   searchQuery = '';
+
+  constructor() {
+    this.fetchAndSaveGenres();
+  }
 
   //вызывайте этот метод по нажатию на логотип/кнопку "Home" (Андрей)
   // вызывайте этот метод, чтобы реализовать подгрузку популярных фильмов на главную  страницу (Вадим)
@@ -17,8 +22,17 @@ class ApiService {
     return response.data;
   }
 
+  async fetchAndSaveGenres() {
+    try {
+      const response = await axios.get(`/genre/movie/list?api_key=${this.#API_KEY}&language=en-US`);
+      const genres = await response.data;
+      storage.save('genres', genres.genres);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   //вызывайте этот метод, чтобы получить информацию про фильм по айдишке для модалки (Виктор)
-  //вызывайте этот метод, чтобы посмотреть жанры фильмов" (Андрей)
   async fetchMovieDetails() {
     const response = await axios.get(
       `/movie/${this.movieId}?api_key=${this.#API_KEY}&language=en-US`,
@@ -44,6 +58,10 @@ class ApiService {
   }
 }
 const api = new ApiService();
+
+api.movieId = 6;
+api.fetchMovieDetails();
+api.fetchTrendingMovies();
 
 export default api;
 
