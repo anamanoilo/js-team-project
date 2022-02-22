@@ -1,9 +1,10 @@
 .movies {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 
   @include mq(tablet) {
+    justify-content: unset;
     margin: -15px;
   }
 
@@ -12,6 +13,10 @@
       margin-bottom: 20px;
     }
     width: 280px;
+
+    @include mq(mobile) {
+      width: 294px;
+    }
 
     @include mq(tablet) {
       margin-bottom: 0;
