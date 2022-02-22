@@ -16,3 +16,10 @@
     width: 912px;
   }
 }
+.style-js {
+  padding-top: 20px;
+
+  @include mq(tablet) {
+    padding-top: 60px;
+  }
+}
