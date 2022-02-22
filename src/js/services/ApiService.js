@@ -7,14 +7,15 @@ class ApiService {
   #page = 1;
 
   //вызывайте этот метод по нажатию на логотип/кнопку "Home" (Андрей)
+  // вызывайте этот метод, чтобы реализовать подгрузку популярных фильмов на главную  страницу (Вадим)
   async fetchTrendingMovies() {
     const response = await axios.get(
       `/trending/movies/day?api_key=${this.#API_KEY}&page=${this.#page}`,
     );
     return response.data;
   }
-  //вызывайте этот метод, чтобы получить информацию про фильм по айдишке для модалки (Виктор)
 
+  //вызывайте этот метод, чтобы получить информацию про фильм по айдишке для модалки (Виктор)
   async fetchMovieDetails(id) {
     const response = await axios.get(`/movie/${id}?api_key=${this.#API_KEY}&language=en-US`);
     return response.data;
@@ -39,7 +40,6 @@ class ApiService {
     this.#page = 1;
   }
 }
-
 const api = new ApiService();
 
 export default api;
@@ -47,7 +47,7 @@ export default api;
 //примеры вызова  методов
 
 // api.fetchTrendingMovies();
-// api.fetchMovieDetails(632727);
+// api.fetchMovieDetails(646385);
 // api.fetchMovieByKeyword('rooms');
 
-//не забудьте у себя обработать ошибки через try... catch
+//не забудьте у себя обработать ошибки через try... catch и выполнить команду npm ci для того чтобы подтянуть axios
