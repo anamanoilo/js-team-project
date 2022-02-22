@@ -1,0 +1,90 @@
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  @include mq(tablet) {
+    justify-content: unset;
+    margin: -15px;
+  }
+
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+    width: 280px;
+
+    @include mq(mobile) {
+      width: 294px;
+    }
+
+    @include mq(tablet) {
+      margin-bottom: 0;
+      margin: 15px;
+      width: 294px;
+    }
+
+    @include mq(desktop) {
+      width: 274px;
+    }
+  }
+
+  &__img {
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  &__wrapper {
+    padding-top: 10px;
+  }
+
+  &__name {
+    text-transform: uppercase;
+    @include font(12px, 1.16, 500);
+    color: var(--primary-title-color);
+  }
+
+  &__wrapper--data {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__genre {
+    position: relative;
+    display: block;
+    @include font(12px, 1.5, 500);
+    color: var(--accent-color);
+    margin-right: 10px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      right: -6px;
+      display: block;
+      border-right: 1px solid var(--accent-color);
+      height: 14px;
+    }
+  }
+
+  &__year {
+    display: block;
+    @include font(12px, 1.5, 500);
+    color: var(--accent-color);
+    margin-right: 10px;
+  }
+
+  &__rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--modal-btn-color);
+    border-radius: 5px;
+    width: 36px;
+    height: 16px;
+
+    @include font(12px, 1.5, 500);
+    color: var(--primary-white-color);
+  }
+}
