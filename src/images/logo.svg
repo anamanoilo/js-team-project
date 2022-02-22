@@ -1,0 +1,7 @@
+<svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<symbol id="film-1" viewBox="0 0 31 32">
+<path fill="none" stroke="#818181" style="stroke: var(--color1, #818181)" stroke-linejoin="round" stroke-linecap="round" stroke-miterlimit="4" stroke-width="2.0645" d="M23.556 2.065h-16.145c-1.243 0-2.25 1.008-2.25 2.25v0 16.145c0 1.243 1.008 2.25 2.25 2.25v0h16.145c1.243 0 2.25-1.008 2.25-2.25v0-16.145c0-1.243-1.008-2.25-2.25-2.25v0zM10.323 2.065v20.645M20.645 2.065v20.645M5.161 12.387h20.645M5.161 7.226h5.161M5.161 17.548h5.161M20.645 17.548h5.161M20.645 7.226h5.161"></path>
+</symbol>
+</defs>
+</svg>
