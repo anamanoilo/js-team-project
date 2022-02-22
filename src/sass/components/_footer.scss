@@ -5,6 +5,7 @@ padding: 30px 0;
 
 @include mq(tablet){
     br{display: none;}
+    height: 80px;
 }
 
 &__section{
