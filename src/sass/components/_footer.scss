@@ -1,0 +1,55 @@
+.footer{
+background-color: #f7f7f7;
+height: 100px;
+padding: 30px 0;
+
+
+@include mq(tablet){
+    br{display: none;}
+    height: 80px;
+}
+
+&__section{
+    height: 100%;
+}
+
+&__text{  
+    position: relative;  
+    text-align: center;  
+    color: var(--footer-text-color);
+    @include font(14px, 1.14, 400);
+    @include mq(tablet){
+        @include font(16px, 1.19, 400)
+    }
+    
+}
+
+&__svg{
+    position: absolute;
+    bottom: 2px;
+    left: calc(100%/2 - 13px);
+    display: block;
+    height: 13px;
+    width: 14px;
+    background-image: url(../img/favorite.svg);
+    
+    @include mq(tablet){
+        left: calc(65% + 1px);
+    }
+    @include mq(desktop){
+        left: calc(65% - 38px);
+    }
+}
+&__underline{
+    text-decoration: underline;
+}
+}
+
+.bottom__text{
+    display: block;
+    margin-top: 10px;
+    @include mq(tablet){
+        margin: 0;
+        display: inline;
+    }
+}
