@@ -1,10 +1,11 @@
-//BASE
-@import './base/reset';
-@import './base/common';
-
 //UTILS
 @import './utils/mixin';
 @import './utils/variables';
 
+//BASE
+@import './base/common';
+@import './base/reset';
+
 //Components
 @import './components/container';
+@import './components/card-template';
