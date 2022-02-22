@@ -18,12 +18,10 @@ async function onLoading() {
 
 function handleError (error) {
     resetView();
-   if (error.status === 400) {
-       console.log(error.message);
-    return;
-  }
-
+    console.log(error.status_message);
 };
+
+
 
 function resetView (){
   api.resetPage();
