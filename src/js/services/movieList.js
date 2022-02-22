@@ -18,7 +18,7 @@ async function onLoading() {
 
 function handleError (error) {
     resetView();
-    console.log(error.status_message);
+    console.log(error.message);
 };
 
 
