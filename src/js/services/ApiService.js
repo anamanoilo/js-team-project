@@ -25,8 +25,14 @@ class ApiService {
   async fetchAndSaveGenres() {
     try {
       const response = await axios.get(`/genre/movie/list?api_key=${this.#API_KEY}&language=en-US`);
-      const genres = await response.data;
-      storage.save('genres', genres.genres);
+      const data = await response.data;
+      const genres = data.genres.reduce((acc, genre) => {
+        return {
+          ...acc,
+          [genre.id]: genre.name,
+        };
+      }, {});
+      storage.save('genres', genres);
     } catch (error) {
       console.error(error);
     }
@@ -35,7 +41,7 @@ class ApiService {
   //вызывайте этот метод, чтобы получить информацию про фильм по айдишке для модалки (Виктор)
   async fetchMovieDetails() {
     const response = await axios.get(
-      `/movie/${this.movieId}?api_key=${this.#API_KEY}&language=en-US`,
+      `/movie/${this.movieId}?api_key=${this.#API_KEY}&language=en-US&append_to_response=videos`,
     );
     return response.data;
   }
@@ -58,10 +64,6 @@ class ApiService {
   }
 }
 const api = new ApiService();
-
-api.movieId = 6;
-api.fetchMovieDetails();
-api.fetchTrendingMovies();
 
 export default api;
 
