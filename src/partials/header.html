@@ -8,7 +8,7 @@
         <p class="header__logo_title">Filmoteka</p>
       </a>
       <nav class="navigation">
-        <a href="./index.html" class="navigation__link" id="home">Home</a>
+        <a href="./index.html" class="navigation__link current" id="home">Home</a>
         <a href="#" class="navigation__link" id="library">My library</a>
       </nav>
     </div>
@@ -16,11 +16,12 @@
       <form class="search__form">
         <div class="search__form_wrap">
           <input type="text" class="search__input" name="search" placeholder="Поиск фильмов" />
-          <button class="search" type="submit">
+          <button class="search__btn" type="submit">
             <svg class="search__icon" width="12" height="12">
               <use href="./images/symbol-defs.svg#icon-search-icon"></use>
             </svg>
           </button>
+          <span class="search__form_strip"></span>
         </div>
       </form>
       <p class="search__fail">Search result not successful. Enter the correct movie name and</p>
@@ -31,44 +32,3 @@
     </div>
   </div>
 </header>
-<!-- header 4 my libraries -->
-<!-- <header class="head-library">
-  <div class="head-library-container container">
-    <nav class="head-library__nav">
-      <div class="head-library__wrap-menu">
-     
-        <ul class="head-library__list-logo">
-          <li class="head-library__logo-item">
-            <a href="index.html" class="head-library__logo-link">
-          
-              <svg class="logo-svg" width="24" height="24">
-            
-                <use href="/images/logo.svg#film-1"></use>
-          </svg>
-        </a>
-      </li>
-          <li class="head-library__logo-item-text">
-            <a href="#" class="head-library__logo-text-link">Filmoteka</a>
-          </li>
-        </ul>
-        
-        
-
-        <ul class="head-library__menu-list">
-          <li class="head-library__menu-list-item">
-            <a href="#" class="head-library__menu-list-link">home</a>
-          </li>
-          <li class="head-library__menu-list-item current-menu">
-            <a href="#" class="head-library__menu-list-link">my library</a>
-          </li>
-        </ul>
-      </div>
-      <di- class="head-library__btn-wrapper">
-        <button class="head-library__btn" type="button">watched</button>
-        <button class="head-library__btn current-btn" type="button">queue</button>
-      </di-
-    </nav>
-  </div>
-</header> -->
-
-<!-- END of header 4 my libraries -->
