@@ -40,7 +40,7 @@ function prepareData(moviesList) {
       const filmTitle = title || name;
       const year = new Date(release_date || first_air_date).getFullYear();
       const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
-      const rating = vote_average;
+      const rating = String(vote_average).padEnd(3, '.0');;
       return { id, filmTitle, poster, genres, year, rating };
     },
   );
