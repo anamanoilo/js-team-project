@@ -4,9 +4,21 @@ const watchedRef = document.querySelector('.watched');
 const queueRef = document.querySelector('.queue');
 
 watchedRef.addEventListener('click', addToWatched);
+queueRef.addEventListener('click', addToQueue);
 
-function addToWatched(obj) {
-  const savedMovies = storage.get('watched') || [];
+function saveMovie(storageKey) {
+  const arrayOfMovies = storage.get('moviesData');
 
-  storage.save('watched', savedMovies.push(obj));
+  const object = arrayOfMovies.find(movie => movie.id === id);
+  const savedMovies = storage.get(storageKey) || [];
+
+  storage.save(storageKey, savedMovies.push(object));
+}
+
+function addToWatched() {
+  saveMovie('watched');
+}
+
+function addToQueue() {
+  saveMovie('queue');
 }
