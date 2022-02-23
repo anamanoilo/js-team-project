@@ -4,11 +4,24 @@
   padding-right: 15px;
   margin: 0 auto;
 
+  @include mq(mobile) {
+    width: 450px;
+  }
+
   @include mq(tablet) {
     width: 648px;
   }
 
   @include mq(desktop) {
     width: 912px;
+  }
+}
+.style-js {
+  padding-top: 20px;
+  padding-bottom: 40px;
+
+  @include mq(tablet) {
+    padding-top: 60px;
+    padding-bottom: 50px;
   }
 }
