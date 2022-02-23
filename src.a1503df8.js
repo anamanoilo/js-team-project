@@ -73,4 +73,4 @@ module.exports="/team-proj-filmoteka/not_found_ver.ae837a68.jpg";
 },{"./ApiService":"TVdG","../../images/not_found_ver.jpg":"xmi3","./localStorage":"QjLp"}],"Focm":[function(require,module,exports) {
 "use strict";require("./sass/main.scss"),require("./js/services/ApiService"),require("./js/services/movieList");
 },{"./sass/main.scss":"clu1","./js/services/ApiService":"TVdG","./js/services/movieList":"aemi"}]},{},["Focm"], null)
-//# sourceMappingURL=/team-proj-filmoteka/src.24a81901.js.map
+//# sourceMappingURL=/team-proj-filmoteka/src.a1503df8.js.map
