@@ -25,7 +25,7 @@ fetchPaginationData();
 
 async function fetchPaginationData() {
   const response = await api.fetchTrendingMovies();
-  amountOfItems = response.total_results;
+  amountOfItems = response.total_results < 500 ? response.total_results : 500;
 
   const options = {
     // below default value of options
@@ -41,7 +41,7 @@ async function fetchPaginationData() {
       page: '<a href="#" class="pagination__page-btn">{{page}}</a>',
       currentPage: '<strong class="pagination__page-btn pagination__is-selected">{{page}}</strong>',
       moveButton:
-        '<a href="#" class="pagination__page-btn tui-{{type}}">' +
+        '<a href="#" class="pagination__page-btn">' +
         '<span class="tui-ico-{{type}}">{{type}}</span>' +
         '</a>',
       disabledMoveButton:
