@@ -1,5 +1,5 @@
 import api from './ApiService';
-import notFoundImg from '../../images/not_found_ver.jpg';
+import notFoundImg from '../img/not_found_ver.jpg';
 import * as storage from './localStorage';
 
 const refs = {
@@ -40,6 +40,7 @@ function prepareData(moviesList) {
       const filmTitle = title || name;
       const year = new Date(release_date || first_air_date).getFullYear();
       const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
+      console.log(poster)
       const rating = String(vote_average).padEnd(3, '.0');;
       return { id, filmTitle, poster, genres, year, rating };
     },
@@ -72,4 +73,4 @@ function renderCard({ id, filmTitle, poster, genres, year, rating }) {
   `;
 }
 
-export { onLoading, makeMovieList, resetView };
+export { onLoading, makeMovieList, resetView, prepareData, renderCard};
