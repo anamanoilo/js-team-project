@@ -4,16 +4,21 @@ import * as storage from './localStorage';
 
 const refs = {
   list: document.querySelector('.movies'),
+  spinner: document.querySelector('.spinner'),
+
 };
 
+refs.spinner.classList.remove('visually-hidden');
 onLoading();
 
 async function onLoading() {
   try {
+
     const movies = await api.fetchTrendingMovies();
     const moviesDatalist = prepareData(movies.results);
     storage.save('moviesData', moviesDatalist);
     makeMovieList(moviesDatalist);
+    refs.spinner.classList.add('visually-hidden');
   } catch (error) {
     handleError(error);
   }
@@ -40,7 +45,7 @@ function prepareData(moviesList) {
       const filmTitle = title || name;
       const year = new Date(release_date || first_air_date).getFullYear();
       const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
-      const rating = String(vote_average).padEnd(3, '.0');;
+      const rating = String(vote_average).padEnd(3, '.0');
       return { id, filmTitle, poster, genres, year, rating };
     },
   );
@@ -53,6 +58,7 @@ function makeMovieList(array) {
     })
     .join('');
   refs.list.insertAdjacentHTML('beforeend', markup);
+
 }
 
 function renderCard({ id, filmTitle, poster, genres, year, rating }) {
