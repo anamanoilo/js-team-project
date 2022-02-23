@@ -58,7 +58,7 @@ function makeMovieList(array) {
 function renderCard({ id, filmTitle, poster, genres, year, rating }) {
   return ` <li id='${id}' class="movies__item">
       <a href="">
-        <img class="movies__img" src="https://image.tmdb.org/t/p/w500${poster}" alt="${filmTitle}" width="280" height="398">
+        <img class="movies__img" src="https://image.tmdb.org/t/p/w500${poster}" alt="${filmTitle}">
         <div class="movies__wrapper">
           <h2 class="movies__name">${filmTitle}</h2>
           <div class="movies__wrapper--data">
