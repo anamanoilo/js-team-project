@@ -8,8 +8,8 @@ onLoading();
 
 async function onLoading() {
    try {
-       const movies = await api.fetchTrendingMovies();
-       const moviesList = movies.results;
+     const movies = await api.fetchTrendingMovies();
+     const moviesList = movies.results;
        makeMovieList(moviesList);
     } catch (error) {
         handleError(error);
@@ -21,8 +21,6 @@ function handleError (error) {
     console.log(error.message);
 };
 
-
-
 function resetView (){
   api.resetPage();
   refs.list.innerHTML = '';
@@ -33,10 +31,11 @@ function makeMovieList(array) {
 
     const markup = array.map(({ id, title, poster_path, name, first_air_date, release_date, vote_average}) => {
         const year = new Date(release_date).getFullYear();
-        const year2 = new Date(first_air_date).getFullYear();
+      const year2 = new Date(first_air_date).getFullYear();
+      const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
             return ` <li id='${id}' class="movies__item">
       <a href="">
-        <img class="movies__img" src="https://image.tmdb.org/t/p/w500${poster_path}" alt="${title || name}" width="280" height="398">
+        <img class="movies__img" src="https://image.tmdb.org/t/p/w500${poster}" alt="${title || name}" width="280" height="398">
         <div class="movies__wrapper">
           <h2 class="movies__name">${title || name}</h2>
           <div class="movies__wrapper--data">
@@ -51,3 +50,6 @@ function makeMovieList(array) {
     }).join("");
     refs.list.insertAdjacentHTML('beforeend', markup);
 }
+
+
+export { onLoading };
