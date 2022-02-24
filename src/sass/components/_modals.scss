@@ -17,28 +17,31 @@
   //   margin-top: 20px;
 
   &__frame {
-    outline: 1px solid tomato;
-
     position: relative;
-    overflow: scroll;
     overflow-y: auto;
     max-height: calc(100vh - 40px);
     padding-right: 20px;
     padding-left: 20px;
     padding-top: 50px;
     padding-bottom: 40px;
+    max-width: 320px;
+    margin: 0 auto;
 
-    background-color: #fff;
+    background-color: var(--primary-white-color);
+
+    @include mq(mobile) {
+      max-width: 294px;
+    }
 
     @include mq(tablet) {
       display: flex;
-      width: 618px;
+      max-width: 618px;
       height: 562px;
       padding-top: 40px;
       padding-bottom: 40px;
 
       @include mq(desktop) {
-        width: 882px;
+        max-width: 882px;
         height: 568px;
       }
     }
