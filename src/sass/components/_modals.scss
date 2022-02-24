@@ -1,0 +1,230 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.612);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 250ms, visibility 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.modal {
+  &__frame {
+    position: relative;
+    overflow-y: auto;
+    max-height: calc(100vh - 40px);
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 50px;
+    padding-bottom: 40px;
+    max-width: 280px;
+    margin: 0 auto;
+
+    background-color: var(--primary-white-color);
+
+    @include mq(mobile) {
+      max-width: 294px;
+    }
+
+    @include mq(tablet) {
+      display: flex;
+      max-width: 618px;
+      height: 562px;
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    @include mq(desktop) {
+      max-width: 882px;
+      height: 568px;
+    }
+  }
+
+  &__close-btn {
+    background-color: transparent;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    &:focus,
+    &:hover {
+      color: #2196f3;
+    }
+  }
+
+  &__card-movie {
+    top: 50px;
+    max-width: 280px;
+    margin: 0 auto;
+
+    @include mq(tablet) {
+      display: flex;
+      max-width: 560px;
+    }
+
+    @include mq(desktop) {
+      min-width: 822px;
+    }
+  }
+
+  &__movie-img {
+    width: 100%;
+    margin-bottom: 30px;
+
+    @include mq(tablet) {
+      width: 264px;
+      height: 370px;
+      object-fit: cover;
+    }
+
+    @include mq(desktop) {
+      width: 396px;
+      height: 477px;
+    }
+  }
+
+  &__wrapper-descriptor {
+    @include mq(tablet) {
+      width: 264px;
+      margin-left: 32px;
+
+      @include mq(desktop) {
+        width: 396px;
+      }
+    }
+  }
+
+  &__movie-title {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    @include font(20px, 1.17, 500);
+
+    @include mq(desktop) {
+      @include font(30px, 1.16, 500);
+    }
+  }
+
+  &__list-movie-indicators {
+    margin-bottom: 20px;
+
+    & li {
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__votes {
+    display: inline-block;
+    color: var(--modal-params-color);
+    width: 110px;
+
+    &-data {
+      text-transform: capitalize;
+    }
+  }
+
+  &__span-rating-orange {
+    display: inline-block;
+    text-align: center;
+    width: 36px;
+    height: 16px;
+    background-color: var(--modal-btn-color);
+    color: var(--primary-white-color);
+    border-radius: 5px;
+    line-height: 16px;
+  }
+
+  &__span-slesh {
+    color: var(--modal-params-color);
+  }
+
+  &__span-rating-gray {
+    display: inline-block;
+    text-align: center;
+    width: 36px;
+    height: 16px;
+    background-color: var(--button-bg-color);
+    color: var(--primary-title-color);
+    border-radius: 5px;
+    line-height: 16px;
+  }
+
+  &__list-original-title {
+    text-transform: uppercase;
+  }
+
+  &__list-genre {
+    text-transform: capitalize;
+  }
+
+  &__title-description {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  &__description {
+    margin-bottom: 40px;
+  }
+
+  &__wrapper-btn {
+    display: flex;
+    justify-content: space-between;
+    width: auto;
+
+    @include mq(desktop) {
+      justify-content: flex-start;
+    }
+  }
+
+  &__btn {
+    width: 113px;
+    height: 44px;
+
+    padding-left: 8px;
+    padding-right: 8px;
+
+    border-radius: 5px;
+    color: var(--primary-title-color);
+    background-color: transparent;
+    border: 1px solid var(--primary-title-color);
+    text-transform: uppercase;
+    @include font(12px, 1.33, 500);
+
+    @include mq(tablet) {
+      width: 125px;
+      height: 44px;
+    }
+
+    @include mq(desktop) {
+      width: 136px;
+    }
+
+    &:last-child {
+      margin-left: 15px;
+    }
+  }
+}
+
+.current-btn {
+  color: var(--primary-white-color);
+  background-color: var(--modal-btn-color);
+  border: 1px solid var(--modal-btn-color);
+}
+
+.close-modal {
+  width: 14px;
+  height: 14px;
+}
+
+.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
