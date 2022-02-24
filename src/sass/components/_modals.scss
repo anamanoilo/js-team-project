@@ -31,21 +31,17 @@
       max-width: 294px;
     }
 
-    @include mq(mobile) {
-      max-width: 294px;
-    }
-
     @include mq(tablet) {
       display: flex;
       max-width: 618px;
       height: 562px;
       padding-top: 40px;
       padding-bottom: 40px;
+    }
 
-      @include mq(desktop) {
-        max-width: 882px;
-        height: 568px;
-      }
+    @include mq(desktop) {
+      max-width: 882px;
+      height: 568px;
     }
   }
 
@@ -68,10 +64,10 @@
     @include mq(tablet) {
       display: flex;
       max-width: 560px;
+    }
 
-      @include mq(desktop) {
-        min-width: 822px;
-      }
+    @include mq(desktop) {
+      min-width: 822px;
     }
   }
 
@@ -83,11 +79,11 @@
       width: 264px;
       height: 370px;
       object-fit: cover;
+    }
 
-      @include mq(desktop) {
-        width: 396px;
-        height: 477px;
-      }
+    @include mq(desktop) {
+      width: 396px;
+      height: 477px;
     }
   }
 
@@ -204,10 +200,10 @@
     @include mq(tablet) {
       width: 125px;
       height: 44px;
+    }
 
-      @include mq(desktop) {
-        width: 136px;
-      }
+    @include mq(desktop) {
+      width: 136px;
     }
 
     &:last-child {
