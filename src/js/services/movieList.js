@@ -1,5 +1,5 @@
 import api from './ApiService';
-import notFoundImg from '../../images/not_found_ver.jpg';
+import notFoundImg from '../img/not_found_ver.jpg';
 import * as storage from './localStorage';
 
 const refs = {
@@ -64,7 +64,7 @@ function makeMovieList(array) {
 function renderCard({ id, filmTitle, poster, genres, year, rating }) {
   return ` <li id='${id}' class="movies__item">
       <a href="">
-        <img class="movies__img" src="https://image.tmdb.org/t/p/w500${poster}" alt="${filmTitle}" width="280" height="398">
+        <img class="movies__img" src="https://image.tmdb.org/t/p/w500${poster}" alt="${filmTitle}">
         <div class="movies__wrapper">
           <h2 class="movies__name">${filmTitle}</h2>
           <div class="movies__wrapper--data">
@@ -78,4 +78,4 @@ function renderCard({ id, filmTitle, poster, genres, year, rating }) {
   `;
 }
 
-export { onLoading, makeMovieList, resetView };
+export { onLoading, makeMovieList, resetView, prepareData, renderCard};
