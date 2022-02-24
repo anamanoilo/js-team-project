@@ -14,8 +14,6 @@
 }
 
 .modal {
-  //   margin-top: 20px;
-
   &__frame {
     position: relative;
     overflow-y: auto;
@@ -24,10 +22,14 @@
     padding-left: 20px;
     padding-top: 50px;
     padding-bottom: 40px;
-    max-width: 320px;
+    max-width: 280px;
     margin: 0 auto;
 
     background-color: var(--primary-white-color);
+
+    @include mq(mobile) {
+      max-width: 294px;
+    }
 
     @include mq(mobile) {
       max-width: 294px;
@@ -48,7 +50,6 @@
   }
 
   &__close-btn {
-    //  position: relative;
     background-color: transparent;
     position: absolute;
     right: 10px;
@@ -60,18 +61,13 @@
   }
 
   &__card-movie {
-    //  position: relative;
     top: 50px;
-    //  padding-right: 20px;
-    //  padding-left: 20px;
-    //  outline: 1px solid green;
     max-width: 280px;
     margin: 0 auto;
 
     @include mq(tablet) {
       display: flex;
       max-width: 560px;
-      // margin: 0 auto;
 
       @include mq(desktop) {
         min-width: 822px;
@@ -132,11 +128,10 @@
     display: inline-block;
     color: var(--modal-params-color);
     width: 110px;
-    text-transform: capitalize;
 
-    //  @include mq(desktop) {
-    //    @include font(16px, 1.17, 500);
-    //  }
+    &-data {
+      text-transform: capitalize;
+    }
   }
 
   &__span-rating-orange {
@@ -185,7 +180,7 @@
   &__wrapper-btn {
     display: flex;
     justify-content: space-between;
-    width: auto /* 250px */;
+    width: auto;
 
     @include mq(desktop) {
       justify-content: flex-start;
@@ -193,10 +188,8 @@
   }
 
   &__btn {
-    //
     width: 113px;
     height: 44px;
-    //  margin: 0 auto;
 
     padding-left: 8px;
     padding-right: 8px;
