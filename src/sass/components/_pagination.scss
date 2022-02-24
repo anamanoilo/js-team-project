@@ -1,8 +1,9 @@
 .pagination {
-  &.tui-pagination {
-    height: 40px;
-    margin-top: 45px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin-top: 45px;
 
   &__page-btn {
     // outline: 1px solid tomato;
@@ -24,5 +25,13 @@
       border-radius: 5px;
       cursor: default;
     }
+  }
+
+  &__list {
+    display: flex;
+  }
+
+  &__item:not(:last-child) {
+    margin-right: 5px;
   }
 }

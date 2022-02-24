@@ -43,3 +43,5 @@ async function loadMoviesByKeyWord() {
     api.resetPage();
   }
 }
+
+export { loadMoviesByKeyWord };
