@@ -14,10 +14,12 @@ onLoading();
 async function onLoading() {
   try {
     const movies = await api.fetchTrendingMovies();
+
+    renderPagination(movies.total_pages);
     const moviesDatalist = prepareData(movies.results);
+
     storage.save('moviesData', moviesDatalist);
     makeMovieList(moviesDatalist);
-    renderPagination();
     refs.spinner.classList.add('visually-hidden');
   } catch (error) {
     handleError(error);

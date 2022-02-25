@@ -77,13 +77,17 @@ refs.prevBtn.addEventListener('click', prevPageBtn);
 refs.nextBtn.addEventListener('click', nextPageBtn);
 
 function prevPageBtn() {
-  const linksRef = document.querySelectorAll('.pagination__list .pagination__link');
-  const prevPage = Number(linksRef[0].textContent);
+  api.page -= 1;
+  isFirstPage();
+  refs.list.innerHTML = '';
+  onLoading();
 }
 
 function nextPageBtn() {
-  const linksRef = document.querySelectorAll('.pagination__list .pagination__link');
-  const lastPage = Number(linksRef[4].textContent);
+  api.page += 1;
+  isFirstPage();
+  refs.list.innerHTML = '';
+  onLoading();
 }
 
 function onNumberClick(e) {
@@ -105,6 +109,7 @@ function isFirstPage() {
 }
 
 function isLastPage() {
+  //доопрацювати
   if (api.page === 1) {
     refs.nextBtn.disabled = true;
   } else {
@@ -112,27 +117,33 @@ function isLastPage() {
   }
 }
 
-function createList(prevPage) {
+function createList(pages) {
   refs.listPagination.innerHTML = '';
   let markup = '';
-  for (let i = prevPage - 5; i < prevPage; i += 1) {
+  for (let i = 1; i <= pages; i += 1) {
     markup += createLinksMarkup(i);
-    refs.listPagination.insertAdjacentHTML('beforeend', markup);
   }
+  refs.listPagination.insertAdjacentHTML('beforeend', markup);
 }
 
-function createLinksMarkup(num) {
+function createLinksMarkup(i) {
   return `<li class="pagination__item">
-          <a class="pagination__link" href="#">${num}</a>
-        </li>`;
-}
-
-function renderPagination() {
-  for (let i = 1; i <= 5; i += 1) {
-    const markup = `<li class="pagination__item">
           <a class="pagination__link" href="#">${i}</a>
         </li>`;
-    refs.listPagination.insertAdjacentHTML('beforeend', markup);
+}
+
+//Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
+
+function renderPagination(pages) {
+  if (pages === 0) {
+    refs.listPagination.innerHTML = '';
+    return;
+  }
+
+  if (pages <= 5) {
+    createList(pages);
+  } else {
+    createList(5);
   }
 }
 
