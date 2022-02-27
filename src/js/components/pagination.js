@@ -3,6 +3,7 @@
 import api from '../services/ApiService';
 import { onLoading } from '../services/movieList';
 import { loadMoviesByKeyWord } from '../services/search';
+import * as storage from '../services/localStorage';
 
 // const container = document.querySelector('#tui-pagination-container');
 
@@ -149,8 +150,8 @@ function createFirstPage(i) {
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
 async function renderPagination() {
-  const movies = await api.fetchTrendingMovies();
-  const pages = movies.total_pages;
+  // const movies = await api.fetchTrendingMovies();
+  const pages = storage.get('totalPages');
   if (pages <= 1) {
     refs.listPagination.innerHTML = '';
     return;

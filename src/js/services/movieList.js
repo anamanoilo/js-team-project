@@ -16,7 +16,7 @@ renderPagination();
 async function onLoading() {
   try {
     const movies = await api.fetchTrendingMovies();
-
+    storage.save('totalPages', movies.total_pages);
     const moviesDatalist = prepareData(movies.results);
 
     storage.save('moviesData', moviesDatalist);
