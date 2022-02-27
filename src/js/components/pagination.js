@@ -86,7 +86,7 @@ function prevPageBtn() {
 function nextPageBtn() {
   api.page += 1;
   isFirstPage();
-  refs.list.innerHTML = '';
+  // refs.list.innerHTML = '';
   onLoading();
 }
 
@@ -95,8 +95,8 @@ function onNumberClick(e) {
     let pageNum = Number(e.target.textContent);
     api.page = pageNum;
     isFirstPage();
-    refs.list.innerHTML = '';
     onLoading();
+    e.target.classList.add('pagination__active');
   }
 }
 
@@ -118,7 +118,7 @@ function isLastPage() {
 }
 
 function createList(pages) {
-  refs.listPagination.innerHTML = '';
+  // refs.listPagination.innerHTML = '';
   let markup = '';
   for (let i = 1; i <= pages; i += 1) {
     markup += createLinksMarkup(i);
@@ -134,7 +134,8 @@ function createLinksMarkup(i) {
 
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
-function renderPagination(pages) {
+async function renderPagination() {
+  const pages = await api.fetchTrendingMovies();
   if (pages === 0) {
     refs.listPagination.innerHTML = '';
     return;

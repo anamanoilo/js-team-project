@@ -10,12 +10,11 @@ const refs = {
 
 refs.spinner.classList.remove('visually-hidden');
 onLoading();
-
+renderPagination(movies.total_pages);
 async function onLoading() {
   try {
     const movies = await api.fetchTrendingMovies();
 
-    renderPagination(movies.total_pages);
     const moviesDatalist = prepareData(movies.results);
 
     storage.save('moviesData', moviesDatalist);
@@ -59,6 +58,7 @@ function makeMovieList(array) {
       return renderCard(movieData);
     })
     .join('');
+  refs.list.innerHTML = '';
   refs.list.insertAdjacentHTML('beforeend', markup);
 }
 
