@@ -10,7 +10,9 @@ const refs = {
 
 refs.spinner.classList.remove('visually-hidden');
 onLoading();
-renderPagination(movies.total_pages);
+
+renderPagination();
+
 async function onLoading() {
   try {
     const movies = await api.fetchTrendingMovies();

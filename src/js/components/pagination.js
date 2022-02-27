@@ -90,12 +90,15 @@ function nextPageBtn() {
   onLoading();
 }
 
-function onNumberClick(e) {
+async function onNumberClick(e) {
+  e.preventDefault();
   if (e.target.tagName === 'A') {
     let pageNum = Number(e.target.textContent);
     api.page = pageNum;
     isFirstPage();
-    onLoading();
+    await onLoading();
+    const activeLink = document.querySelector('.pagination__active');
+    activeLink.classList.remove('pagination__active');
     e.target.classList.add('pagination__active');
   }
 }
@@ -118,11 +121,16 @@ function isLastPage() {
 }
 
 function createList(pages) {
-  // refs.listPagination.innerHTML = '';
   let markup = '';
   for (let i = 1; i <= pages; i += 1) {
-    markup += createLinksMarkup(i);
+    if (api.page === i) {
+      markup += createFirstPage(i);
+    } else {
+      markup += createLinksMarkup(i);
+    }
   }
+
+  refs.listPagination.innerHTML = '';
   refs.listPagination.insertAdjacentHTML('beforeend', markup);
 }
 
@@ -132,11 +140,18 @@ function createLinksMarkup(i) {
         </li>`;
 }
 
+function createFirstPage(i) {
+  return `<li class="pagination__item">
+          <a class="pagination__link pagination__active" href="#">${i}</a>
+        </li>`;
+}
+
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
 async function renderPagination() {
-  const pages = await api.fetchTrendingMovies();
-  if (pages === 0) {
+  const movies = await api.fetchTrendingMovies();
+  const pages = movies.total_pages;
+  if (pages <= 1) {
     refs.listPagination.innerHTML = '';
     return;
   }
