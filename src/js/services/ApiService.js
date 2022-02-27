@@ -48,8 +48,8 @@ class ApiService {
   //вызывайте этот метод, чтобы реализовать поиск фильмов по ключевому слову (Валентин)
   async fetchMovieByKeyword() {
     const response = await axios.get(
-      `/search/movie/?api_key=${this.#API_KEY}&query=${
-        this.searchQuery
+      `/search/movie/?api_key=${this.#API_KEY}&query=${this.searchQuery}&page=${
+        this.page
       }&language=en-US&include_adult=false`,
     );
     return response.data;

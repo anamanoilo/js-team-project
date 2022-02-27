@@ -1,21 +1,24 @@
 import api from './ApiService';
 import notFoundImg from '../img/not_found_ver.jpg';
 import * as storage from './localStorage';
+import { renderPagination } from '../components/pagination';
 
 const refs = {
   list: document.querySelector('.movies'),
   spinner: document.querySelector('.spinner'),
-
 };
 
 refs.spinner.classList.remove('visually-hidden');
 onLoading();
 
+renderPagination();
+
 async function onLoading() {
   try {
-
     const movies = await api.fetchTrendingMovies();
+
     const moviesDatalist = prepareData(movies.results);
+
     storage.save('moviesData', moviesDatalist);
     makeMovieList(moviesDatalist);
     refs.spinner.classList.add('visually-hidden');
@@ -57,8 +60,8 @@ function makeMovieList(array) {
       return renderCard(movieData);
     })
     .join('');
+  refs.list.innerHTML = '';
   refs.list.insertAdjacentHTML('beforeend', markup);
-
 }
 
 function renderCard({ id, filmTitle, poster, genres, year, rating }) {
@@ -78,4 +81,4 @@ function renderCard({ id, filmTitle, poster, genres, year, rating }) {
   `;
 }
 
-export { onLoading, makeMovieList, resetView, prepareData, renderCard};
+export { onLoading, makeMovieList, resetView, prepareData, renderCard };

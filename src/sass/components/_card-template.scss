@@ -22,7 +22,6 @@
     @include mq(tablet) {
       margin-bottom: 0;
       margin: 15px;
-      width: 294px;
     }
 
     @include mq(desktop) {
@@ -31,7 +30,7 @@
   }
 
   &__img {
-    height: 400px;
+    height: 398px;
     object-fit: cover;
     border-radius: 5px;
     overflow: hidden;
