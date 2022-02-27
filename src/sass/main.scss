@@ -7,10 +7,11 @@
 @import './base/reset';
 
 //Components
+@import './components/header';
 @import './components/container';
 @import './components/card-template';
 @import './components/header';
 @import './components/spinner';
+@import './components/pagination';
 @import './components/footer';
 @import './components/modals';
-@import './components/pagination';
