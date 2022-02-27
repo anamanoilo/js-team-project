@@ -79,15 +79,25 @@ refs.nextBtn.addEventListener('click', nextPageBtn);
 function prevPageBtn() {
   api.page -= 1;
   isFirstPage();
-  refs.list.innerHTML = '';
-  onLoading();
+
+  const paginationLinks = document.querySelectorAll('.pagination__link');
+  changeLinksText(-5, paginationLinks);
+
+  if (paginationLinks[0].textContent === '1') {
+    refs.prevBtn.disabled = true;
+  }
 }
 
 function nextPageBtn() {
   api.page += 1;
   isFirstPage();
-  // refs.list.innerHTML = '';
-  onLoading();
+
+  const paginationLinks = document.querySelectorAll('.pagination__link');
+  changeLinksText(5, paginationLinks);
+}
+
+function changeLinksText(num, refs) {
+  refs.forEach(link => (link.textContent = Number(link.textContent) + num));
 }
 
 async function onNumberClick(e) {
