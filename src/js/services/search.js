@@ -8,6 +8,7 @@ const refs = {
   input: document.querySelector('.search__input'),
   list: document.querySelector('.movies'),
   error: document.querySelector('.search__fail'),
+  spinner: document.querySelector('.spinner'),
 };
 
 let inputValue = '';
