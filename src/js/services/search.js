@@ -22,14 +22,17 @@ async function searchFilms(e) {
   if (!inputValue) {
     return;
   }
+  refs.spinner.classList.remove('visually-hidden');
   loadMoviesByKeyWord();
 }
 
 async function loadMoviesByKeyWord() {
   try {
+    api.resetPage();
     const movies = await api.fetchMovieByKeyword();
 
     if (!movies.results.length) {
+      refs.spinner.classList.add('visually-hidden');
       refs.error.textContent = 'Search result not successful. Enter the correct movie name';
       return;
     }
@@ -38,6 +41,7 @@ async function loadMoviesByKeyWord() {
     storage.save('moviesData', moviesDatalist);
     refs.list.innerHTML = '';
     makeMovieList(moviesDatalist);
+    refs.spinner.classList.add('visually-hidden');
   } catch (error) {
     console.error(error);
     api.resetPage();
