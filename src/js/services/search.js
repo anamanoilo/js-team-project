@@ -40,6 +40,7 @@ async function loadMoviesByKeyWord() {
     const moviesDatalist = prepareData(movies.results);
     storage.save('moviesData', moviesDatalist);
     refs.list.innerHTML = '';
+    refs.error.textContent = '';
     makeMovieList(moviesDatalist);
     refs.spinner.classList.add('visually-hidden');
   } catch (error) {
