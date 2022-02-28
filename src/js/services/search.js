@@ -8,6 +8,7 @@ const refs = {
   input: document.querySelector('.search__input'),
   list: document.querySelector('.movies'),
   error: document.querySelector('.search__fail'),
+  spinner: document.querySelector('.spinner'),
 };
 
 let inputValue = '';
@@ -40,6 +41,7 @@ async function loadMoviesByKeyWord() {
     const moviesDatalist = prepareData(movies.results);
     storage.save('moviesData', moviesDatalist);
     refs.list.innerHTML = '';
+    refs.error.textContent = '';
     makeMovieList(moviesDatalist);
     refs.spinner.classList.add('visually-hidden');
   } catch (error) {
