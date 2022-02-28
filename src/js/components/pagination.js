@@ -68,7 +68,6 @@ const refs = {
   prevBtn: document.querySelector('[data-btn="prev"]'),
   nextBtn: document.querySelector('[data-btn="next"]'),
   listPagination: document.querySelector('#pagination__list'),
-  links: document.querySelectorAll('.pagination__link'),
   list: document.querySelector('.movies'),
 };
 
@@ -91,13 +90,9 @@ function prevPageBtn() {
 function nextPageBtn() {
   api.page += 1;
   isFirstPage();
-
-  const paginationLinks = document.querySelectorAll('.pagination__link');
-  changeLinksText(5, paginationLinks);
-}
-
-function changeLinksText(num, refs) {
-  refs.forEach(link => (link.textContent = Number(link.textContent) + num));
+  onLoading();
+  // const activeLink = document.querySelector('.pagination__active');
+  // activeLink.classList.remove('pagination__active');
 }
 
 async function onNumberClick(e) {
