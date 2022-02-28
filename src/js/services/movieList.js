@@ -67,7 +67,7 @@ function makeMovieList(array) {
 
 function renderCard({ id, filmTitle, poster, genres, year, rating }) {
   return ` <li id='${id}' class="movies__item">
-      <a href="">
+      <a href="" class="movies__link">
         <img class="movies__img" src="${poster}" alt="${filmTitle}">
         <div class="movies__wrapper">
           <h2 class="movies__name">${filmTitle}</h2>
