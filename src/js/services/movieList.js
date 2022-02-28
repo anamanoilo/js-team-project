@@ -41,14 +41,15 @@ function prepareData(moviesList) {
   const allGenres = storage.get('genres');
   return moviesList.map(
     ({ id, title, poster_path, genre_ids, name, first_air_date, release_date, vote_average }) => {
-      const genres = genre_ids
-        .filter(id => allGenres[id])
-        .map(id => allGenres[id])
-        .join(', ');
+      const genres =
+        genre_ids
+          .filter(id => allGenres[id])
+          .map(id => allGenres[id])
+          .join(', ') || 'Genres are not specified';
       const filmTitle = title || name;
-      const year = new Date(release_date || first_air_date).getFullYear();
+      const year = new Date(release_date || first_air_date).getFullYear() || '';
       const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
-      const rating = String(vote_average).padEnd(3, '.0');
+      const rating = vote_average === 10 ? '10.0' : String(vote_average).padEnd(3, '.0');
       return { id, filmTitle, poster, genres, year, rating };
     },
   );
