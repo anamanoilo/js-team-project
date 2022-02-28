@@ -23,12 +23,13 @@ async function searchFilms(e) {
   if (!inputValue) {
     return;
   }
-  refs.spinner.classList.remove('visually-hidden');
+
   loadMoviesByKeyWord();
 }
 
 async function loadMoviesByKeyWord() {
   try {
+    refs.spinner.classList.remove('visually-hidden');
     api.resetPage();
     const movies = await api.fetchMovieByKeyword();
 

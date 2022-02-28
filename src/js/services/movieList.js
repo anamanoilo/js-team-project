@@ -8,13 +8,13 @@ const refs = {
   spinner: document.querySelector('.spinner'),
 };
 
-refs.spinner.classList.remove('visually-hidden');
 onLoading();
 
 renderPagination();
 
 async function onLoading() {
   try {
+    refs.spinner.classList.remove('visually-hidden');
     const movies = await api.fetchTrendingMovies();
     storage.save('totalPages', movies.total_pages);
     const moviesDatalist = prepareData(movies.results);
