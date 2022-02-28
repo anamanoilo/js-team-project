@@ -92,8 +92,44 @@ function nextPageBtn() {
   api.page += 1;
   isFirstPage();
   onLoading();
-  // const activeLink = document.querySelector('.pagination__active');
-  // activeLink.classList.remove('pagination__active');
+
+  const totalPages = storage.get('totalPages');
+  const paginationLinks = document.querySelectorAll('.pagination__link');
+  const lastCurrentLink = Number(paginationLinks[4].textContent);
+  const nextPagination = totalPages - lastCurrentLink;
+
+  if (api.page > lastCurrentLink) {
+    if (nextPagination <= 1) {
+      refs.listPagination.innerHTML = '';
+      return;
+    }
+
+    if (nextPagination <= 5) {
+      let markup = '';
+      for (let i = lastCurrentLink + 1; i <= nextPagination; i += 1) {
+        if (api.page === i) {
+          markup += createFirstPage(i);
+        } else {
+          markup += createLinksMarkup(i);
+        }
+      }
+
+      refs.listPagination.innerHTML = '';
+      refs.listPagination.insertAdjacentHTML('beforeend', markup);
+    } else {
+      let markup = '';
+      for (let i = lastCurrentLink + 1; i <= lastCurrentLink + 5; i += 1) {
+        if (api.page === i) {
+          markup += createFirstPage(i);
+        } else {
+          markup += createLinksMarkup(i);
+        }
+      }
+
+      refs.listPagination.innerHTML = '';
+      refs.listPagination.insertAdjacentHTML('beforeend', markup);
+    }
+  }
 }
 
 async function onNumberClick(e) {
@@ -154,9 +190,9 @@ function createFirstPage(i) {
 
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
-async function renderPagination() {
-  // const movies = await api.fetchTrendingMovies();
+function renderPagination() {
   const pages = storage.get('totalPages');
+
   if (pages <= 1) {
     refs.listPagination.innerHTML = '';
     return;
@@ -170,18 +206,3 @@ async function renderPagination() {
 }
 
 export { renderPagination };
-
-/////////////////////////////////////////////////////////////////////////////
-
-// class Pagination {
-//   constructor(method) {
-//     this.renderPagination();
-//     clickCallback = method;
-//   }
-
-//   renderPagination() {
-//     //render pagination
-//   }
-// }
-
-// const trendingPagination = new Pagination(onLoading);
