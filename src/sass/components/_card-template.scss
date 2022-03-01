@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  min-height: 100vh;
 
   @include mq(tablet) {
     justify-content: unset;
@@ -21,7 +22,6 @@
     @include mq(tablet) {
       margin-bottom: 0;
       margin: 15px;
-      width: 294px;
     }
 
     @include mq(desktop) {
@@ -29,9 +29,31 @@
     }
   }
 
+  &__link {
+    display: block;
+    transform: scale(1);
+    transition: transform 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+
+  &__link:focus,
+  &__link:hover {
+    transform: scale(1.08);
+  }
   &__img {
+    height: 398px;
+    object-fit: cover;
     border-radius: 5px;
     overflow: hidden;
+
+    width: 280px;
+
+    @include mq(mobile) {
+      width: 294px;
+    }
+
+    @include mq(desktop) {
+      width: 274px;
+    }
   }
 
   &__wrapper {

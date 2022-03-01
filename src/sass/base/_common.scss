@@ -3,4 +3,5 @@ body {
   color: var(--primary-title-color);
 
   @include font(12px, 1.33, 500);
+  // overflow: hidden;
 }
