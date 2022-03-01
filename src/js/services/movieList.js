@@ -37,7 +37,7 @@ function handleError(error) {
 function resetView() {
   api.resetPage();
   refs.list.innerHTML = '';
-
+}
 
 function prepareData(moviesList) {
   const allGenres = storage.get('genres');
@@ -50,7 +50,7 @@ function prepareData(moviesList) {
       const filmTitle = title || name;
       const year = new Date(release_date || first_air_date).getFullYear();
       const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
-      const rating = String(vote_average).padEnd(3,".0");
+      const rating = String(vote_average).padEnd(3, '.0');
       return { id, filmTitle, poster, genres, year, rating };
     },
   );
