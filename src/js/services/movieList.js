@@ -2,6 +2,7 @@ import api from './ApiService';
 import notFoundImg from '../img/not_found_ver.jpg';
 import * as storage from './localStorage';
 import { renderPagination } from '../components/pagination';
+import openModal from '../components/modal-movie';
 
 const refs = {
   list: document.querySelector('.movies'),
@@ -22,6 +23,7 @@ async function onLoading() {
     storage.save('moviesData', moviesDatalist);
     makeMovieList(moviesDatalist);
     refs.spinner.classList.add('visually-hidden');
+    refs.list.addEventListener('click', openModal);
   } catch (error) {
     handleError(error);
   }
@@ -67,7 +69,7 @@ function makeMovieList(array) {
 
 function renderCard({ id, filmTitle, poster, genres, year, rating }) {
   return ` <li id='${id}' class="movies__item">
-      <a href="">
+      <a href="" class="movies__link">
         <img class="movies__img" src="${poster}" alt="${filmTitle}">
         <div class="movies__wrapper">
           <h2 class="movies__name">${filmTitle}</h2>
