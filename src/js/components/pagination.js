@@ -79,24 +79,68 @@ refs.nextBtn.addEventListener('click', nextPageBtn);
 function prevPageBtn() {
   api.page -= 1;
   isFirstPage();
+  onLoading();
 
+  const totalPages = storage.get('totalPages');
   const paginationLinks = document.querySelectorAll('.pagination__link');
-  changeLinksText(-5, paginationLinks);
 
-  if (paginationLinks[0].textContent === '1') {
-    refs.prevBtn.disabled = true;
+  const lastCurrentLink = Number(paginationLinks[4].textContent);
+  const firstCurrentLink = Number(paginationLinks[0].textContent);
+
+  if (api.page >= firstCurrentLink) {
+    let markup = '';
+    for (let i = lastCurrentLink - 4; i < lastCurrentLink + 1; i += 1) {
+      if (api.page === i) {
+        markup += createFirstPage(i);
+      } else {
+        markup += createLinksMarkup(i);
+      }
+    }
+
+    refs.listPagination.innerHTML = '';
+    refs.listPagination.insertAdjacentHTML('beforeend', markup);
+    return;
+  }
+
+  if (api.page < firstCurrentLink) {
+    let markup = '';
+    for (let i = firstCurrentLink - 5; i <= firstCurrentLink - 1; i += 1) {
+      if (api.page === i) {
+        markup += createFirstPage(i);
+      } else {
+        markup += createLinksMarkup(i);
+      }
+    }
+
+    refs.listPagination.innerHTML = '';
+    refs.listPagination.insertAdjacentHTML('beforeend', markup);
   }
 }
 
 function nextPageBtn() {
   api.page += 1;
   isFirstPage();
+
   onLoading();
 
   const totalPages = storage.get('totalPages');
   const paginationLinks = document.querySelectorAll('.pagination__link');
   const lastCurrentLink = Number(paginationLinks[4].textContent);
   const nextPagination = totalPages - lastCurrentLink;
+
+  if (api.page <= lastCurrentLink) {
+    let markup = '';
+    for (let i = lastCurrentLink - 4; i < lastCurrentLink + 1; i += 1) {
+      if (api.page === i) {
+        markup += createFirstPage(i);
+      } else {
+        markup += createLinksMarkup(i);
+      }
+    }
+
+    refs.listPagination.innerHTML = '';
+    refs.listPagination.insertAdjacentHTML('beforeend', markup);
+  }
 
   if (api.page > lastCurrentLink) {
     if (nextPagination <= 1) {
@@ -154,8 +198,7 @@ function isFirstPage() {
 }
 
 function isLastPage() {
-  //доопрацювати
-  if (api.page === 1) {
+  if (api.page === totalPages) {
     refs.nextBtn.disabled = true;
   } else {
     refs.nextBtn.disabled = false;
