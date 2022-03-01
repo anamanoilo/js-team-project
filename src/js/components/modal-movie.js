@@ -1,6 +1,7 @@
 import api from '../services/ApiService';
-
 import notFoundImg from '../img/not_found_ver.jpg';
+import { addToWatched, addToQueue } from './cardTemplate';
+import * as storage from '../services/localStorage';
 
 const refs = {
   modal: document.querySelector('[data-modal]'),
@@ -11,6 +12,9 @@ const refs = {
 
 async function openModal(e) {
   e.preventDefault();
+  if (e.target.tagName === 'UL') {
+    return;
+  }
   refs.spinner.classList.remove('visually-hidden');
   refs.modal.classList.add('is-open');
   api.movieId = Number(e.target.closest('li').id);
@@ -60,11 +64,11 @@ async function openModal(e) {
               <p class="modal__description">
                  ${overview}
               </p>
-              <div class="modal__wrapper-btn" id="${id}">
-                <button class="modal__btn current-btn" type="button">
+              <div class="modal__wrapper-btn" id="${id}" data-buttons>
+                <button class="modal__btn" type="button" data-watched>
                   add to watched
                 </button>
-                <button class="modal__btn" type="button">
+                <button class="modal__btn" type="button" data-queue>
                   add to queue
                 </button>
               </div>
@@ -72,6 +76,16 @@ async function openModal(e) {
           
   `;
     refs.innerModal.insertAdjacentHTML('afterbegin', markup);
+
+    const watchedRef = document.querySelector('[data-watched]');
+    const queueRef = document.querySelector('[data-queue]');
+
+    nameButton('watched', watchedRef, id);
+    nameButton('queue', queueRef, id);
+
+    watchedRef.addEventListener('click', addToWatched);
+    queueRef.addEventListener('click', addToQueue);
+
     document.body.style.overflow = 'hidden';
     refs.spinner.classList.add('visually-hidden');
   } catch (err) {
@@ -82,8 +96,27 @@ async function openModal(e) {
 }
 
 function closeModal(e) {
+  const watchedRef = document.querySelector('[data-watched]');
+  const queueRef = document.querySelector('[data-queue]');
+  watchedRef.removeEventListener('click', addToWatched);
+  queueRef.removeEventListener('click', addToQueue);
   document.body.style = '';
   refs.modal.classList.remove('is-open');
   refs.innerModal.innerHTML = '';
 }
+
+function nameButton(storageKey, btnRef, id) {
+  const savedMovies = storage.get(storageKey) || [];
+
+  for (const movie of savedMovies) {
+    if (movie.id === id) {
+      btnRef.textContent = `Remove from ${storageKey}`;
+      btnRef.classList.remove('current-btn');
+      return;
+    }
+    btnRef.textContent = `Add to ${storageKey}`;
+    btnRef.classList.add('current-btn');
+  }
+}
+
 export default openModal;
