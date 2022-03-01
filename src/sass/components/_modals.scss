@@ -221,6 +221,14 @@
 .close-modal {
   width: 14px;
   height: 14px;
+
+  &:hover {
+    width: 18px;
+    height: 18px;
+    fill: var(--modal-btn-color);
+    transform: rotate(90deg);
+    transition: background-color 1500ms linear, transform 500ms ease-in-out;
+  }
 }
 
 .is-hidden {
