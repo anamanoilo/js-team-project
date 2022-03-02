@@ -96,10 +96,10 @@ async function openModal(e) {
 }
 
 function closeModal(e) {
-  const watchedRef = document.querySelector('[data-watched]');
-  const queueRef = document.querySelector('[data-queue]');
-  watchedRef.removeEventListener('click', addToWatched);
-  queueRef.removeEventListener('click', addToQueue);
+  // const watchedRef = document.querySelector('[data-watched]');
+  // const queueRef = document.querySelector('[data-queue]');
+  // watchedRef.removeEventListener('click', addToWatched);
+  // queueRef.removeEventListener('click', addToQueue);
   document.body.style = '';
   refs.modal.classList.remove('is-open');
   refs.innerModal.innerHTML = '';
