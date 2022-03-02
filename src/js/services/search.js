@@ -23,16 +23,14 @@ async function searchFilms(e) {
   if (!inputValue) {
     return;
   }
-
+  api.resetPage();
   loadMoviesByKeyWord();
 }
 
 async function loadMoviesByKeyWord() {
   try {
     refs.spinner.classList.remove('visually-hidden');
-    api.resetPage();
     const movies = await api.fetchMovieByKeyword();
-
     if (!movies.results.length) {
       refs.spinner.classList.add('visually-hidden');
       refs.error.textContent = 'Search result not successful. Enter the correct movie name';
