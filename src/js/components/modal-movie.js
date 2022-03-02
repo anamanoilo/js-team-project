@@ -20,7 +20,6 @@ async function openModal(e) {
   api.movieId = Number(e.target.closest('li').id);
   refs.closeBtn.addEventListener('click', closeModal);
   try {
-    api.movieId = Number(e.target.closest('li').id);
     const {
       id,
       original_title,
@@ -65,10 +64,10 @@ async function openModal(e) {
                  ${overview}
               </p>
               <div class="modal__wrapper-btn" id="${id}" data-buttons>
-                <button class="modal__btn" type="button" data-watched>
+                <button class="modal__btn current-btn" type="button" data-watched>
                   add to watched
                 </button>
-                <button class="modal__btn" type="button" data-queue>
+                <button class="modal__btn current-btn" type="button" data-queue>
                   add to queue
                 </button>
               </div>
