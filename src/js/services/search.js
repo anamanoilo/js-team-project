@@ -1,6 +1,7 @@
 import api from './ApiService';
 import * as storage from './localStorage';
 import { prepareData, makeMovieList } from './movieList';
+import { renderPagination } from '../components/pagination';
 
 const refs = {
   searchForm: document.querySelector('.search__form'),
@@ -17,20 +18,20 @@ refs.searchForm.addEventListener('submit', searchFilms);
 
 async function searchFilms(e) {
   e.preventDefault();
-
+  api.page = 1;
+  renderPagination();
   inputValue = refs.input.value.trim();
   api.searchQuery = inputValue;
   if (!inputValue) {
     return;
   }
-
+  api.resetPage();
   loadMoviesByKeyWord();
 }
 
 async function loadMoviesByKeyWord() {
   try {
     refs.spinner.classList.remove('visually-hidden');
-    api.resetPage();
     const movies = await api.fetchMovieByKeyword();
 
     if (!movies.results.length) {
@@ -51,4 +52,4 @@ async function loadMoviesByKeyWord() {
   }
 }
 
-export { loadMoviesByKeyWord };
+export { loadMoviesByKeyWord, inputValue };

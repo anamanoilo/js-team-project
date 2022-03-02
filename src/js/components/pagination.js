@@ -2,7 +2,7 @@
 // import 'tui-pagination/dist/tui-pagination.css';
 import api from '../services/ApiService';
 import { onLoading } from '../services/movieList';
-import { loadMoviesByKeyWord } from '../services/search';
+import { loadMoviesByKeyWord, inputValue } from '../services/search';
 import * as storage from '../services/localStorage';
 
 // const container = document.querySelector('#tui-pagination-container');
@@ -76,12 +76,16 @@ refs.listPagination.addEventListener('click', onNumberClick);
 refs.prevBtn.addEventListener('click', prevPageBtn);
 refs.nextBtn.addEventListener('click', nextPageBtn);
 
-function prevPageBtn() {
+async function prevPageBtn() {
   api.page -= 1;
   isFirstPage();
-  onLoading();
 
-  const totalPages = storage.get('totalPages');
+  if (inputValue) {
+    await loadMoviesByKeyWord();
+  } else {
+    await onLoading();
+  }
+
   const paginationLinks = document.querySelectorAll('.pagination__link');
 
   const lastCurrentLink = Number(paginationLinks[4].textContent);
@@ -117,11 +121,15 @@ function prevPageBtn() {
   }
 }
 
-function nextPageBtn() {
+async function nextPageBtn() {
   api.page += 1;
   isFirstPage();
 
-  onLoading();
+  if (inputValue) {
+    await loadMoviesByKeyWord();
+  } else {
+    await onLoading();
+  }
 
   const totalPages = storage.get('totalPages');
   const paginationLinks = document.querySelectorAll('.pagination__link');
@@ -143,12 +151,12 @@ function nextPageBtn() {
   }
 
   if (api.page > lastCurrentLink) {
-    if (nextPagination <= 1) {
-      refs.listPagination.innerHTML = '';
-      return;
-    }
+    // if (nextPagination <= 1) {
+    //   refs.listPagination.innerHTML = '';
+    //   return;
+    // }
 
-    if (nextPagination <= 5) {
+    if (nextPagination < 5) {
       let markup = '';
       for (let i = lastCurrentLink + 1; i <= nextPagination; i += 1) {
         if (api.page === i) {
@@ -182,7 +190,12 @@ async function onNumberClick(e) {
     let pageNum = Number(e.target.textContent);
     api.page = pageNum;
     isFirstPage();
-    await onLoading();
+
+    if (inputValue) {
+      await loadMoviesByKeyWord();
+    } else {
+      await onLoading();
+    }
     const activeLink = document.querySelector('.pagination__active');
     activeLink.classList.remove('pagination__active');
     e.target.classList.add('pagination__active');
@@ -235,6 +248,7 @@ function createFirstPage(i) {
 
 function renderPagination() {
   const pages = storage.get('totalPages');
+  console.log('🚀 ~ pages', pages);
 
   if (pages <= 1) {
     refs.listPagination.innerHTML = '';

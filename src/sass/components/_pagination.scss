@@ -5,18 +5,20 @@
   height: 40px;
   margin-top: 45px;
 
-  &__active {
-    background-color: var(--accent-color);
-    color: var(--primary-white-color);
-  }
-
   &__link {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    border: 1px solid tomato;
+    // border: 1px solid tomato;
+    color: var(--primary-title-color);
+  }
+
+  &__active {
+    background-color: var(--accent-color);
+    color: var(--primary-white-color);
+    border-radius: 5px;
   }
 
   &__page-btn {
