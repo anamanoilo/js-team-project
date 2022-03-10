@@ -51,22 +51,18 @@
     display: none;
     color: var(--primary-white-color);
     @include font(30px, 1.16, 500);
+     transition: color 350ms cubic-bezier(0.4, 0, 0.4, 1);
     @include mq(tablet) {
       display: block;
     }
+     &:hover, &:focus{
+    color: var(--accent-color);
+  }
   }
   &__logo_list{
-     display: flex;
+     display: flex; 
   }
-  &__logo_scale{
-    margin-right: 1px;
-  transition: transform 250ms cubic-bezier(0.4, 0, 0.4, 1);
-
-  }
-  &__logo_scale:hover, &__logo_scale:focus{
-    color: var(--accent-color); 
-    transform: scale(1.2);
-  }
+ 
  
 }
 .navigation {
@@ -180,7 +176,7 @@
      transition: background-color 250ms cubic-bezier(0.4, 0, 0.4, 1);
      &:hover,
      &:focus{
-border-color: transparent;;
+border-color: var(--accent-color);
 color: var(--accent-color);  
    }
     &:first-child{
@@ -192,10 +188,11 @@ color: var(--accent-color);
       &.is-active{
 background-color: var(--accent-color);
 border:none;
-box-shadow: 0px 8px 43px rgba(255, 107, 1, 0.6);
+box-shadow: 0px 8px 43px rgba(255, 107, 1, 0.4);
   &:hover,
   &:focus {
     color: var(--primary-white-color);
+      box-shadow: 0px 0px 15px 4px rgba(255, 107, 1, 1);
   }
       }
   }
@@ -226,36 +223,6 @@ box-shadow: 0px 8px 43px rgba(255, 107, 1, 0.6);
         url('/images/header/libraryDesktop-2x-min.jpg');
     }
   }
-}
-/* Overline in */
-.hvr-outline-in {
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  position: relative;
-}
-.hvr-outline-in:before {
-  pointer-events: none;
-  content: '';
-  position: absolute;
-  border: var(--accent-color) solid 4px;
-  border-radius: 5px;
-  top: -16px;
-  right: -16px;
-  bottom: -16px;
-  left: -16px;
-  opacity: 0;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: top, right, bottom, left;
-  transition-property: top, right, bottom, left;
-}
-.hvr-outline-in:hover:before, .hvr-outline-in:focus:before, .hvr-outline-in:active:before {
-  top: -8px;
-  right: -8px;
-  bottom: -8px;
-  left: -8px;
-  opacity: 1;
 }
 /* Underline Reveal */
 .hvr-underline-reveal {

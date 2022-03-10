@@ -10,7 +10,7 @@ function onSwitch() {
       refs.body.classList.toggle('dark-theme')
       localStorage.setItem('theme', 'dark-theme');
    } else {
-      localStorage.clear();
+      localStorage.removeItem('theme','dark-theme')();
    }
 }
 function currentTheme() {

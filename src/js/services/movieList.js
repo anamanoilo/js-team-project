@@ -8,7 +8,6 @@ const refs = {
   spinner: document.querySelector('.spinner'),
 };
 
-refs.spinner.classList.remove('visually-hidden');
 onLoading();
 
 renderPagination();
