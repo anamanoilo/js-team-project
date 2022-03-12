@@ -34,7 +34,6 @@ async function loadMoviesByKeyWord() {
   try {
     refs.spinner.classList.remove('visually-hidden');
     const movies = await api.fetchMovieByKeyword();
-
     if (!movies.results.length) {
       refs.spinner.classList.add('visually-hidden');
       refs.error.textContent = 'Search result not successful. Enter the correct movie name';
