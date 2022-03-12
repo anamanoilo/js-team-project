@@ -1,71 +1,10 @@
-// const Pagination = require('tui-pagination');
-// import 'tui-pagination/dist/tui-pagination.css';
 import api from '../services/ApiService';
 import { onLoading } from '../services/movieList';
 import { loadMoviesByKeyWord, inputValue } from '../services/search';
 import * as storage from '../services/localStorage';
 
-// const container = document.querySelector('#tui-pagination-container');
-
-// let amountOfItems = 0;
-
-// fetchPaginationData();
-
-// async function fetchPaginationData() {
-//   const response = await api.fetchTrendingMovies();
-//   amountOfItems = response.total_results;
-
-//   const options = {
-//     // below default value of options
-//     totalItems: amountOfItems,
-//     itemsPerPage: 20,
-//     visiblePages: 5,
-//     centerAlign: false,
-//   };
-
-//   const pagination = new Pagination(container, options);
-// }
-
-/////////////////////////////////////////////////////////////////////
-
-// async function fetchPaginationData() {
-//   const response = await api.fetchTrendingMovies();
-//   amountOfItems = response.total_results < 500 ? response.total_results : 500;
-
-//   const options = {
-//     // below default value of options
-//     totalItems: amountOfItems,
-//     itemsPerPage: 10,
-//     visiblePages: 10,
-//     page: 1,
-//     centerAlign: false,
-//     firstItemClassName: 'pagination__first-child',
-//     lastItemClassName: 'pagination__last-child',
-
-//     template: {
-//       page: '<a href="#" class="pagination__page-btn">{{page}}</a>',
-//       currentPage: '<strong class="pagination__page-btn pagination__is-selected">{{page}}</strong>',
-//       moveButton:
-//         '<a href="#" class="pagination__page-btn">' +
-//         '<span class="tui-ico-{{type}}">{{type}}</span>' +
-//         '</a>',
-//       disabledMoveButton:
-//         '<span class="pagination__page-btn tui-is-disabled">' +
-//         '<span class="tui-ico-{{type}}">{{type}}</span>' +
-//         '</span>',
-//       moreButton:
-//         '<a href="#" class="pagination__page-btn tui-{{type}}-is-ellip">' +
-//         '<span class="tui-ico-ellip">...</span>' +
-//         '</a>',
-//     },
-//   };
-
-//   const pagination = new Pagination(container, options);
-// }
-
-/////////////////////////////////////////////////////////////
-
 const refs = {
+  pagination: document.querySelector('[data-pagination]'),
   prevBtn: document.querySelector('[data-btn="prev"]'),
   nextBtn: document.querySelector('[data-btn="next"]'),
   listPagination: document.querySelector('#pagination__list'),
@@ -89,29 +28,27 @@ async function nextPageBtn() {
   } else {
     await onLoading();
   }
+
   totalPages = storage.get('totalPages');
-
   const middlePage = listFirstPage + 2;
+  const nextPagination = totalPages - api.page;
 
-  const lastPage = listFirstPage + 4;
-
-  const nextPagination = totalPages - lastPage;
-
-  if (nextPagination < 5) {
-    createList(listFirstPage, totalPages);
+  if (totalPages <= 5) {
+    createList(1, totalPages);
     return;
   }
 
-  if (api.page > middlePage) {
-    createList(api.page - 2, api.page + 2);
-    listFirstPage += 1;
+  if (nextPagination <= 2) {
+    createList(totalPages - 4, totalPages);
     return;
   }
 
   if (api.page <= middlePage) {
     createList(listFirstPage, listFirstPage + 4);
-    listFirstPage += 1;
+    return;
   }
+
+  createList(api.page - 2, api.page + 2);
 }
 
 async function prevPageBtn() {
@@ -126,15 +63,21 @@ async function prevPageBtn() {
   }
 
   totalPages = storage.get('totalPages');
+  const nextPagination = totalPages - api.page;
 
-  if (totalPages < 5) {
-    createList(listFirstPage, totalPages);
+  if (totalPages <= 5) {
+    createList(1, totalPages);
     return;
   }
 
   if (api.page <= 3) {
     listFirstPage = 1;
     createList(listFirstPage, listFirstPage + 4);
+    return;
+  }
+
+  if (nextPagination <= 2) {
+    createList(totalPages - 4, totalPages);
     return;
   }
 
@@ -155,10 +98,27 @@ async function onNumberClick(e) {
     } else {
       await onLoading();
     }
-    listFirstPage = api.page;
-    const activeLink = document.querySelector('.pagination__active');
-    activeLink.classList.remove('pagination__active');
-    e.target.classList.add('pagination__active');
+
+    totalPages = storage.get('totalPages');
+    const nextPagination = totalPages - api.page;
+
+    if (totalPages <= 5) {
+      createList(1, totalPages);
+      return;
+    }
+
+    if (api.page <= 3) {
+      listFirstPage = 1;
+      createList(listFirstPage, listFirstPage + 4);
+      return;
+    }
+
+    if (nextPagination <= 2) {
+      createList(totalPages - 4, totalPages);
+      return;
+    }
+
+    createList(api.page - 2, api.page + 2);
   }
 }
 
@@ -188,7 +148,6 @@ function createList(first, last) {
       markup += createLinksMarkup(i);
     }
   }
-
   refs.listPagination.innerHTML = '';
   refs.listPagination.insertAdjacentHTML('beforeend', markup);
 }
@@ -201,19 +160,28 @@ function createLinksMarkup(i) {
 
 function createCurrentPage(i) {
   return `<li class="pagination__item">
-          <a class="pagination__link pagination__active" href="#">${i}</a>
+          <span class="pagination__link pagination__active" href="#">${i}</span>
         </li>`;
 }
 
+function showButtons() {
+  refs.pagination.classList.remove('is-hidden');
+}
+
+function hideButtons() {
+  refs.pagination.classList.add('is-hidden');
+}
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
 function renderPagination() {
+  showButtons();
   isFirstPage();
   isLastPage();
   listFirstPage = 1;
   totalPages = storage.get('totalPages');
 
   if (totalPages <= 1) {
+    hideButtons();
     refs.listPagination.innerHTML = '';
     return;
   }
