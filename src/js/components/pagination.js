@@ -76,53 +76,12 @@ refs.listPagination.addEventListener('click', onNumberClick);
 refs.prevBtn.addEventListener('click', prevPageBtn);
 refs.nextBtn.addEventListener('click', nextPageBtn);
 
-async function prevPageBtn() {
-  api.page -= 1;
-  isFirstPage();
-
-  if (inputValue) {
-    await loadMoviesByKeyWord();
-  } else {
-    await onLoading();
-  }
-
-  const paginationLinks = document.querySelectorAll('.pagination__link');
-
-  const lastCurrentLink = Number(paginationLinks[4].textContent);
-  const firstCurrentLink = Number(paginationLinks[0].textContent);
-
-  if (api.page >= firstCurrentLink) {
-    let markup = '';
-    for (let i = lastCurrentLink - 4; i < lastCurrentLink + 1; i += 1) {
-      if (api.page === i) {
-        markup += createFirstPage(i);
-      } else {
-        markup += createLinksMarkup(i);
-      }
-    }
-
-    refs.listPagination.innerHTML = '';
-    refs.listPagination.insertAdjacentHTML('beforeend', markup);
-    return;
-  }
-
-  if (api.page < firstCurrentLink) {
-    let markup = '';
-    for (let i = firstCurrentLink - 5; i <= firstCurrentLink - 1; i += 1) {
-      if (api.page === i) {
-        markup += createFirstPage(i);
-      } else {
-        markup += createLinksMarkup(i);
-      }
-    }
-
-    refs.listPagination.innerHTML = '';
-    refs.listPagination.insertAdjacentHTML('beforeend', markup);
-  }
-}
+let listFirstPage = 1;
+let totalPages = storage.get('totalPages');
 
 async function nextPageBtn() {
   api.page += 1;
+  isLastPage();
   isFirstPage();
 
   if (inputValue) {
@@ -130,58 +89,57 @@ async function nextPageBtn() {
   } else {
     await onLoading();
   }
+  totalPages = storage.get('totalPages');
 
-  const totalPages = storage.get('totalPages');
-  const paginationLinks = document.querySelectorAll('.pagination__link');
-  const lastCurrentLink = Number(paginationLinks[4].textContent);
-  const nextPagination = totalPages - lastCurrentLink;
+  const middlePage = listFirstPage + 2;
 
-  if (api.page <= lastCurrentLink) {
-    let markup = '';
-    for (let i = lastCurrentLink - 4; i < lastCurrentLink + 1; i += 1) {
-      if (api.page === i) {
-        markup += createFirstPage(i);
-      } else {
-        markup += createLinksMarkup(i);
-      }
-    }
+  const lastPage = listFirstPage + 4;
 
-    refs.listPagination.innerHTML = '';
-    refs.listPagination.insertAdjacentHTML('beforeend', markup);
+  const nextPagination = totalPages - lastPage;
+
+  if (nextPagination < 5) {
+    createList(listFirstPage, totalPages);
+    return;
   }
 
-  if (api.page > lastCurrentLink) {
-    // if (nextPagination <= 1) {
-    //   refs.listPagination.innerHTML = '';
-    //   return;
-    // }
-
-    if (nextPagination < 5) {
-      let markup = '';
-      for (let i = lastCurrentLink + 1; i <= nextPagination; i += 1) {
-        if (api.page === i) {
-          markup += createFirstPage(i);
-        } else {
-          markup += createLinksMarkup(i);
-        }
-      }
-
-      refs.listPagination.innerHTML = '';
-      refs.listPagination.insertAdjacentHTML('beforeend', markup);
-    } else {
-      let markup = '';
-      for (let i = lastCurrentLink + 1; i <= lastCurrentLink + 5; i += 1) {
-        if (api.page === i) {
-          markup += createFirstPage(i);
-        } else {
-          markup += createLinksMarkup(i);
-        }
-      }
-
-      refs.listPagination.innerHTML = '';
-      refs.listPagination.insertAdjacentHTML('beforeend', markup);
-    }
+  if (api.page > middlePage) {
+    createList(api.page - 2, api.page + 2);
+    listFirstPage += 1;
+    return;
   }
+
+  if (api.page <= middlePage) {
+    createList(listFirstPage, listFirstPage + 4);
+    listFirstPage += 1;
+  }
+}
+
+async function prevPageBtn() {
+  api.page -= 1;
+  isFirstPage();
+  isLastPage();
+
+  if (inputValue) {
+    await loadMoviesByKeyWord();
+  } else {
+    await onLoading();
+  }
+
+  totalPages = storage.get('totalPages');
+
+  if (totalPages < 5) {
+    createList(listFirstPage, totalPages);
+    return;
+  }
+
+  if (api.page <= 3) {
+    listFirstPage = 1;
+    createList(listFirstPage, listFirstPage + 4);
+    return;
+  }
+
+  createList(api.page - 2, api.page + 2);
+  listFirstPage -= 1;
 }
 
 async function onNumberClick(e) {
@@ -190,12 +148,14 @@ async function onNumberClick(e) {
     let pageNum = Number(e.target.textContent);
     api.page = pageNum;
     isFirstPage();
+    isLastPage();
 
     if (inputValue) {
       await loadMoviesByKeyWord();
     } else {
       await onLoading();
     }
+    listFirstPage = api.page;
     const activeLink = document.querySelector('.pagination__active');
     activeLink.classList.remove('pagination__active');
     e.target.classList.add('pagination__active');
@@ -211,6 +171,7 @@ function isFirstPage() {
 }
 
 function isLastPage() {
+  const totalPages = storage.get('totalPages');
   if (api.page === totalPages) {
     refs.nextBtn.disabled = true;
   } else {
@@ -218,11 +179,11 @@ function isLastPage() {
   }
 }
 
-function createList(pages) {
+function createList(first, last) {
   let markup = '';
-  for (let i = 1; i <= pages; i += 1) {
+  for (let i = first; i <= last; i += 1) {
     if (api.page === i) {
-      markup += createFirstPage(i);
+      markup += createCurrentPage(i);
     } else {
       markup += createLinksMarkup(i);
     }
@@ -238,7 +199,7 @@ function createLinksMarkup(i) {
         </li>`;
 }
 
-function createFirstPage(i) {
+function createCurrentPage(i) {
   return `<li class="pagination__item">
           <a class="pagination__link pagination__active" href="#">${i}</a>
         </li>`;
@@ -247,18 +208,20 @@ function createFirstPage(i) {
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
 function renderPagination() {
-  const pages = storage.get('totalPages');
-  console.log('🚀 ~ pages', pages);
+  isFirstPage();
+  isLastPage();
+  listFirstPage = 1;
+  totalPages = storage.get('totalPages');
 
-  if (pages <= 1) {
+  if (totalPages <= 1) {
     refs.listPagination.innerHTML = '';
     return;
   }
 
-  if (pages <= 5) {
-    createList(pages);
+  if (totalPages <= 5) {
+    createList(listFirstPage, totalPages);
   } else {
-    createList(5);
+    createList(listFirstPage, 5);
   }
 }
 

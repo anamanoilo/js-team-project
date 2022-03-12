@@ -18,15 +18,16 @@ refs.searchForm.addEventListener('submit', searchFilms);
 
 async function searchFilms(e) {
   e.preventDefault();
-  api.page = 1;
-  renderPagination();
+  api.resetPage();
+
   inputValue = refs.input.value.trim();
   api.searchQuery = inputValue;
   if (!inputValue) {
     return;
   }
-  api.resetPage();
-  loadMoviesByKeyWord();
+
+  await loadMoviesByKeyWord();
+  renderPagination();
 }
 
 async function loadMoviesByKeyWord() {
@@ -41,6 +42,7 @@ async function loadMoviesByKeyWord() {
     }
 
     const moviesDatalist = prepareData(movies.results);
+    storage.save('totalPages', movies.total_pages);
     storage.save('moviesData', moviesDatalist);
     refs.list.innerHTML = '';
     refs.error.textContent = '';
