@@ -3,12 +3,19 @@
     <ul class="movies" id="list"></ul>
 
     <div class="spinner"></div>
-    <!-- <div id="tui-pagination-container" class="tui-pagination pagination"></div> -->
-    <div class="pagination">
-      <button type="button" data-btn="prev" disabled>Prev</button>
+    <div class="pagination" data-pagination>
+      <button class="pagination__btn-prev" type="button" data-btn="prev" disabled>
+        <svg class="pagination__icon" width="16" height="16">
+          <use href="./images/symbol-defs.svg#icon-arrow-left"></use>
+        </svg>
+      </button>
       <ul id="pagination__list" class="pagination__list">
       </ul>
-      <button type="button" data-btn="next">Next</button>
+      <button class="pagination__btn-next" type="button" data-btn="next">
+        <svg class="pagination__icon" width="16" height="16">
+          <use href="./images/symbol-defs.svg#icon-arrow-right"></use>
+        </svg>
+      </button>
     </div>
 
   </div>
