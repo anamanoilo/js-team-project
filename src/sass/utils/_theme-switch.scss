@@ -37,9 +37,6 @@ border-radius: 7px;
     &:checked ~ span{
       left:25px;
   }
-  &:checked ~ .bulb{
-    background-image: url(/images/header/bulb_off-min.png);
-  }
 }
   & span{
     position: absolute;
@@ -62,21 +59,4 @@ border-radius: 7px;
       transition:0.5s;
     }
   }
-}
-.bulb{
-display: none;
-  position: relative;
-  top: -160px;
-  left: 35%;
-  transform: translateX(-35%);
-  width: 70px;
-  height: 80px;
-  pointer-events: none;
-  background-image: url(/images/header/bulb_on-min.png);
-  background-repeat: no-repeat;
-  background-size: cover;
-  transition: 0.5s;
-  @include mq(tablet) {
-      display: block;
-    }
 }

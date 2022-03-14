@@ -1,23 +1,20 @@
 <header class="header">
   <div class="container">
     <div class="header__wrap">
-      <a href="./index.html" class="header__logo_link hvr-icon-pulse-grow">
+      <a href="#" class="header__logo_link hvr-icon-pulse-grow" id="logo">
         <svg class="header__logo_icon hvr-icon" width="24" height="24">
           <use href="./images/symbol-defs.svg#icon-headerLogo"></use>
         </svg>
         <p class="header__logo_title">Filmoteka</p>
       </a>
       <nav class="navigation">
-        <a href="./index.html" class="navigation__link hvr-underline-reveal current" id="home"
-          >Home</a
-        >
+        <a href="#" class="navigation__link hvr-underline-reveal current" id="home">Home</a>
         <a href="#" class="navigation__link hvr-underline-reveal" id="library">My library</a>
-        <label class="theme-switch">
-          <input id="checkbox" type="checkbox" />
-          <span id="click"><ion-icon name="bulb-outline"></ion-icon></span>
-          <div class="bulb"></div>
-        </label>
       </nav>
+      <label class="theme-switch">
+        <input id="checkbox" type="checkbox" />
+        <span id="click"><ion-icon name="bulb-outline"></ion-icon></span>
+      </label>
     </div>
     <div class="search">
       <form class="search__form">
@@ -33,9 +30,9 @@
       </form>
       <p class="search__fail"></p>
     </div>
-    <div class="library">
-      <a href="#" class="library__btn watched__link is-hidden is-active">Watched</a>
-      <a href="#" class="library__btn queue__link is-hidden">Queue</a>
+    <div class="library visually-hidden" id="libraryBtn">
+      <a href="#" class="library__btn watched__link is-active">Watched</a>
+      <a href="#" class="library__btn queue__link">Queue</a>
     </div>
   </div>
 </header>
