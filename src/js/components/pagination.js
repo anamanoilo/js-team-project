@@ -1,75 +1,13 @@
-// const Pagination = require('tui-pagination');
-// import 'tui-pagination/dist/tui-pagination.css';
 import api from '../services/ApiService';
 import { onLoading } from '../services/movieList';
-import { loadMoviesByKeyWord } from '../services/search';
+import { loadMoviesByKeyWord, inputValue } from '../services/search';
 import * as storage from '../services/localStorage';
 
-// const container = document.querySelector('#tui-pagination-container');
-
-// let amountOfItems = 0;
-
-// fetchPaginationData();
-
-// async function fetchPaginationData() {
-//   const response = await api.fetchTrendingMovies();
-//   amountOfItems = response.total_results;
-
-//   const options = {
-//     // below default value of options
-//     totalItems: amountOfItems,
-//     itemsPerPage: 20,
-//     visiblePages: 5,
-//     centerAlign: false,
-//   };
-
-//   const pagination = new Pagination(container, options);
-// }
-
-/////////////////////////////////////////////////////////////////////
-
-// async function fetchPaginationData() {
-//   const response = await api.fetchTrendingMovies();
-//   amountOfItems = response.total_results < 500 ? response.total_results : 500;
-
-//   const options = {
-//     // below default value of options
-//     totalItems: amountOfItems,
-//     itemsPerPage: 10,
-//     visiblePages: 10,
-//     page: 1,
-//     centerAlign: false,
-//     firstItemClassName: 'pagination__first-child',
-//     lastItemClassName: 'pagination__last-child',
-
-//     template: {
-//       page: '<a href="#" class="pagination__page-btn">{{page}}</a>',
-//       currentPage: '<strong class="pagination__page-btn pagination__is-selected">{{page}}</strong>',
-//       moveButton:
-//         '<a href="#" class="pagination__page-btn">' +
-//         '<span class="tui-ico-{{type}}">{{type}}</span>' +
-//         '</a>',
-//       disabledMoveButton:
-//         '<span class="pagination__page-btn tui-is-disabled">' +
-//         '<span class="tui-ico-{{type}}">{{type}}</span>' +
-//         '</span>',
-//       moreButton:
-//         '<a href="#" class="pagination__page-btn tui-{{type}}-is-ellip">' +
-//         '<span class="tui-ico-ellip">...</span>' +
-//         '</a>',
-//     },
-//   };
-
-//   const pagination = new Pagination(container, options);
-// }
-
-/////////////////////////////////////////////////////////////
-
 const refs = {
+  pagination: document.querySelector('[data-pagination]'),
   prevBtn: document.querySelector('[data-btn="prev"]'),
   nextBtn: document.querySelector('[data-btn="next"]'),
   listPagination: document.querySelector('#pagination__list'),
-  links: document.querySelectorAll('.pagination__link'),
   list: document.querySelector('.movies'),
 };
 
@@ -77,18 +15,74 @@ refs.listPagination.addEventListener('click', onNumberClick);
 refs.prevBtn.addEventListener('click', prevPageBtn);
 refs.nextBtn.addEventListener('click', nextPageBtn);
 
-function prevPageBtn() {
-  api.page -= 1;
+let listFirstPage = 1;
+let totalPages = storage.get('totalPages');
+
+async function nextPageBtn() {
+  api.page += 1;
+  isLastPage();
   isFirstPage();
-  refs.list.innerHTML = '';
-  onLoading();
+
+  if (inputValue) {
+    await loadMoviesByKeyWord();
+  } else {
+    await onLoading();
+  }
+
+  totalPages = storage.get('totalPages');
+  const middlePage = listFirstPage + 2;
+  const nextPagination = totalPages - api.page;
+
+  if (totalPages <= 5) {
+    createList(1, totalPages);
+    return;
+  }
+
+  if (nextPagination <= 2) {
+    createList(totalPages - 4, totalPages);
+    return;
+  }
+
+  if (api.page <= middlePage) {
+    createList(listFirstPage, listFirstPage + 4);
+    return;
+  }
+
+  createList(api.page - 2, api.page + 2);
 }
 
-function nextPageBtn() {
-  api.page += 1;
+async function prevPageBtn() {
+  api.page -= 1;
   isFirstPage();
-  // refs.list.innerHTML = '';
-  onLoading();
+  isLastPage();
+
+  if (inputValue) {
+    await loadMoviesByKeyWord();
+  } else {
+    await onLoading();
+  }
+
+  totalPages = storage.get('totalPages');
+  const nextPagination = totalPages - api.page;
+
+  if (totalPages <= 5) {
+    createList(1, totalPages);
+    return;
+  }
+
+  if (api.page <= 3) {
+    listFirstPage = 1;
+    createList(listFirstPage, listFirstPage + 4);
+    return;
+  }
+
+  if (nextPagination <= 2) {
+    createList(totalPages - 4, totalPages);
+    return;
+  }
+
+  createList(api.page - 2, api.page + 2);
+  listFirstPage -= 1;
 }
 
 async function onNumberClick(e) {
@@ -97,10 +91,34 @@ async function onNumberClick(e) {
     let pageNum = Number(e.target.textContent);
     api.page = pageNum;
     isFirstPage();
-    await onLoading();
-    const activeLink = document.querySelector('.pagination__active');
-    activeLink.classList.remove('pagination__active');
-    e.target.classList.add('pagination__active');
+    isLastPage();
+
+    if (inputValue) {
+      await loadMoviesByKeyWord();
+    } else {
+      await onLoading();
+    }
+
+    totalPages = storage.get('totalPages');
+    const nextPagination = totalPages - api.page;
+
+    if (totalPages <= 5) {
+      createList(1, totalPages);
+      return;
+    }
+
+    if (api.page <= 3) {
+      listFirstPage = 1;
+      createList(listFirstPage, listFirstPage + 4);
+      return;
+    }
+
+    if (nextPagination <= 2) {
+      createList(totalPages - 4, totalPages);
+      return;
+    }
+
+    createList(api.page - 2, api.page + 2);
   }
 }
 
@@ -113,24 +131,23 @@ function isFirstPage() {
 }
 
 function isLastPage() {
-  //доопрацювати
-  if (api.page === 1) {
+  const totalPages = storage.get('totalPages');
+  if (api.page === totalPages) {
     refs.nextBtn.disabled = true;
   } else {
     refs.nextBtn.disabled = false;
   }
 }
 
-function createList(pages) {
+function createList(first, last) {
   let markup = '';
-  for (let i = 1; i <= pages; i += 1) {
+  for (let i = first; i <= last; i += 1) {
     if (api.page === i) {
-      markup += createFirstPage(i);
+      markup += createCurrentPage(i);
     } else {
       markup += createLinksMarkup(i);
     }
   }
-
   refs.listPagination.innerHTML = '';
   refs.listPagination.insertAdjacentHTML('beforeend', markup);
 }
@@ -141,42 +158,39 @@ function createLinksMarkup(i) {
         </li>`;
 }
 
-function createFirstPage(i) {
+function createCurrentPage(i) {
   return `<li class="pagination__item">
-          <a class="pagination__link pagination__active" href="#">${i}</a>
+          <span class="pagination__link pagination__active" href="#">${i}</span>
         </li>`;
 }
 
+function showButtons() {
+  refs.pagination.classList.remove('is-hidden');
+}
+
+function hideButtons() {
+  refs.pagination.classList.add('is-hidden');
+}
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
-async function renderPagination() {
-  // const movies = await api.fetchTrendingMovies();
-  const pages = storage.get('totalPages');
-  if (pages <= 1) {
+function renderPagination() {
+  showButtons();
+  isFirstPage();
+  isLastPage();
+  listFirstPage = 1;
+  totalPages = storage.get('totalPages');
+
+  if (totalPages <= 1) {
+    hideButtons();
     refs.listPagination.innerHTML = '';
     return;
   }
 
-  if (pages <= 5) {
-    createList(pages);
+  if (totalPages <= 5) {
+    createList(listFirstPage, totalPages);
   } else {
-    createList(5);
+    createList(listFirstPage, 5);
   }
 }
 
 export { renderPagination };
-
-/////////////////////////////////////////////////////////////////////////////
-
-// class Pagination {
-//   constructor(method) {
-//     this.renderPagination();
-//     clickCallback = method;
-//   }
-
-//   renderPagination() {
-//     //render pagination
-//   }
-// }
-
-// const trendingPagination = new Pagination(onLoading);

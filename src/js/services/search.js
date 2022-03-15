@@ -1,6 +1,7 @@
 import api from './ApiService';
 import * as storage from './localStorage';
 import { prepareData, makeMovieList } from './movieList';
+import { renderPagination } from '../components/pagination';
 
 const refs = {
   searchForm: document.querySelector('.search__form'),
@@ -17,21 +18,22 @@ refs.searchForm.addEventListener('submit', searchFilms);
 
 async function searchFilms(e) {
   e.preventDefault();
+  api.resetPage();
 
   inputValue = refs.input.value.trim();
   api.searchQuery = inputValue;
   if (!inputValue) {
     return;
   }
-  refs.spinner.classList.remove('visually-hidden');
-  loadMoviesByKeyWord();
+
+  await loadMoviesByKeyWord();
+  renderPagination();
 }
 
 async function loadMoviesByKeyWord() {
   try {
-    api.resetPage();
+    refs.spinner.classList.remove('visually-hidden');
     const movies = await api.fetchMovieByKeyword();
-
     if (!movies.results.length) {
       refs.spinner.classList.add('visually-hidden');
       refs.error.textContent = 'Search result not successful. Enter the correct movie name';
@@ -39,6 +41,7 @@ async function loadMoviesByKeyWord() {
     }
 
     const moviesDatalist = prepareData(movies.results);
+    storage.save('totalPages', movies.total_pages);
     storage.save('moviesData', moviesDatalist);
     refs.list.innerHTML = '';
     refs.error.textContent = '';
@@ -50,4 +53,4 @@ async function loadMoviesByKeyWord() {
   }
 }
 
-export { loadMoviesByKeyWord };
+export { loadMoviesByKeyWord, inputValue };
