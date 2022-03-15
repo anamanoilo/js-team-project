@@ -45,7 +45,7 @@ function prepareData(moviesList) {
     ({ id, title, poster_path, genre_ids, name, first_air_date, release_date, vote_average }) => {
       const genres =
         genre_ids
-          .filter(id => allGenres[id])
+          ?.filter(id => allGenres[id])
           .map(id => allGenres[id])
           .join(', ') || 'Genres are not specified';
       const filmTitle = title || name;
