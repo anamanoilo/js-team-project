@@ -32,7 +32,7 @@
   &__link {
     display: block;
     transform: scale(1);
-    transition: transform 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: transform 300ms cubic-bezier(0.075, 0.82, 0.165, 1) 750ms;
   }
 
   &__link:focus,
