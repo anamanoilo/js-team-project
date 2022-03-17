@@ -17,6 +17,24 @@
     background-color:rgb(47, 45, 45);
     color: var(--primary-white-color);
   }
+  & .modal__frame{
+  background-color:  var(--primary-title-color);
+  }
+  & .close-modal{
+     fill:  var(--primary-white-color);
+  }
+  & .modal__movie-title{
+    color: var(--primary-white-color);
+  }
+  & .modal__list-movie-indicators{
+    color: var(--primary-white-color);
+  }
+  & .modal__title-description{
+    color: var(--primary-white-color);
+  }
+  & .modal__description{
+    color: var(--primary-white-color);
+  }
 }
 
 /* CheckBox */ 
