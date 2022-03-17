@@ -171,8 +171,8 @@ function showButtons() {
 function hideButtons() {
   refs.pagination.classList.add('is-hidden');
 }
-//Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 
+//Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
 function renderPagination() {
   showButtons();
   isFirstPage();
