@@ -17,6 +17,7 @@ refs.nextBtn.addEventListener('click', nextPageBtn);
 
 let listFirstPage = 1;
 let totalPages = storage.get('totalPages');
+let markup = '';
 
 async function nextPageBtn() {
   api.page += 1;
@@ -29,7 +30,6 @@ async function nextPageBtn() {
     await onLoading();
   }
 
-  totalPages = storage.get('totalPages');
   const middlePage = listFirstPage + 2;
   const nextPagination = totalPages - api.page;
 
@@ -62,7 +62,6 @@ async function prevPageBtn() {
     await onLoading();
   }
 
-  totalPages = storage.get('totalPages');
   const nextPagination = totalPages - api.page;
 
   if (totalPages <= 5) {
@@ -99,7 +98,6 @@ async function onNumberClick(e) {
       await onLoading();
     }
 
-    totalPages = storage.get('totalPages');
     const nextPagination = totalPages - api.page;
 
     if (totalPages <= 5) {
@@ -140,7 +138,53 @@ function isLastPage() {
 }
 
 function createList(first, last) {
-  let markup = '';
+  markup = '';
+
+  if (totalPages <= 5) {
+    reconfigurePagination(first, last);
+    refs.listPagination.innerHTML = '';
+    refs.listPagination.insertAdjacentHTML('beforeend', markup);
+    return;
+  }
+
+  if (api.page > 3) {
+    markup += createLinksMarkup(1);
+    markup += createPrevPagesBtn();
+  }
+
+  reconfigurePagination(first, last);
+
+  if (totalPages - api.page > 2) {
+    markup += createNextPagesBtn();
+    markup += createLinksMarkup(totalPages);
+  }
+
+  refs.listPagination.innerHTML = '';
+  refs.listPagination.insertAdjacentHTML('beforeend', markup);
+  const getNextPagesRef = refs.listPagination.querySelector('[data-get="next"]');
+  const getPrevPagesRef = refs.listPagination.querySelector('[data-get="prev"]');
+
+  if (getNextPagesRef) {
+    getNextPagesRef.addEventListener('click', getNextPages);
+  }
+
+  if (getPrevPagesRef) {
+    getPrevPagesRef.addEventListener('click', getPrevPages);
+  }
+}
+
+function getNextPages() {
+  const elements = refs.listPagination.querySelectorAll('.pagination__link');
+  const firstElement = Number(elements[0].textContent);
+  const lastElement = Number(elements[4].textContent);
+  createList(firstElement + 5, lastElement + 5);
+}
+
+function getPrevPages() {
+  console.log('click');
+}
+
+function reconfigurePagination(first, last) {
   for (let i = first; i <= last; i += 1) {
     if (api.page === i) {
       markup += createCurrentPage(i);
@@ -148,8 +192,18 @@ function createList(first, last) {
       markup += createLinksMarkup(i);
     }
   }
-  refs.listPagination.innerHTML = '';
-  refs.listPagination.insertAdjacentHTML('beforeend', markup);
+}
+
+function createNextPagesBtn() {
+  return `<li class="pagination__item">
+          <button class="pagination__link" type="button" data-get="next">...</button>
+        </li>`;
+}
+
+function createPrevPagesBtn() {
+  return `<li class="pagination__item">
+          <button class="pagination__link" type="button" data-get="prev">...</button>
+        </li>`;
 }
 
 function createLinksMarkup(i) {
@@ -179,6 +233,10 @@ function renderPagination() {
   isLastPage();
   listFirstPage = 1;
   totalPages = storage.get('totalPages');
+
+  // if (totalPages > 500) {
+  //   totalPages = 500;
+  // }
 
   if (totalPages <= 1) {
     hideButtons();
