@@ -1,6 +1,6 @@
 import api from '../services/ApiService';
 import notFoundImg from '../img/not_found_ver.jpg';
-import { addToWatched, addToQueue } from './cardTemplate';
+import { addToWatched, addToQueue } from '../services/saveMoviesToLibrary';
 import * as storage from '../services/localStorage';
 
 const refs = {

@@ -129,7 +129,6 @@ function isFirstPage() {
 }
 
 function isLastPage() {
-  const totalPages = storage.get('totalPages');
   if (api.page === totalPages) {
     refs.nextBtn.disabled = true;
   } else {
@@ -140,7 +139,7 @@ function isLastPage() {
 function createList(first, last) {
   markup = '';
 
-  if (totalPages <= 5) {
+  if (totalPages <= 10) {
     reconfigurePagination(first, last);
     refs.listPagination.innerHTML = '';
     refs.listPagination.insertAdjacentHTML('beforeend', markup);
@@ -166,22 +165,90 @@ function createList(first, last) {
 
   if (getNextPagesRef) {
     getNextPagesRef.addEventListener('click', getNextPages);
+    getNextPagesRef.disabled = false;
   }
 
   if (getPrevPagesRef) {
     getPrevPagesRef.addEventListener('click', getPrevPages);
+    getPrevPagesRef.disabled = false;
   }
 }
 
 function getNextPages() {
-  const elements = refs.listPagination.querySelectorAll('.pagination__link');
-  const firstElement = Number(elements[0].textContent);
-  const lastElement = Number(elements[4].textContent);
-  createList(firstElement + 5, lastElement + 5);
+  const getPrevPagesRef = refs.listPagination.querySelector('[data-get="prev"]');
+  const getNextPagesRef = refs.listPagination.querySelector('[data-get="next"]');
+  const allPages = refs.listPagination.querySelectorAll('[data-pagination-link]');
+  let secondElement = Number(allPages[1].textContent);
+  let lastElement = Number(allPages[4].textContent);
+  let nextRoll = totalPages - lastElement;
+
+  if (nextRoll <= 6) {
+    rollPages(totalPages - 5, totalPages - 1);
+    getNextPagesRef.disabled = true;
+    return;
+  }
+
+  if (!getPrevPagesRef) {
+    rollPages(secondElement + 4, lastElement + 5);
+  } else {
+    rollPages(secondElement + 5, lastElement + 6);
+  }
 }
 
 function getPrevPages() {
-  console.log('click');
+  const getPrevPagesRef = refs.listPagination.querySelector('[data-get="prev"]');
+  const getNextPagesRef = refs.listPagination.querySelector('[data-get="next"]');
+  const allPages = refs.listPagination.querySelectorAll('[data-pagination-link]');
+  let secondElement = Number(allPages[1].textContent);
+  let lastElement = Number(allPages[4].textContent);
+  let nextRoll = lastElement - 5;
+
+  if (nextRoll <= 5) {
+    rollPages(listFirstPage + 1, listFirstPage + 5);
+    getPrevPagesRef.disabled = true;
+    return;
+  }
+
+  if (!getNextPagesRef) {
+    rollPages(totalPages - 9, totalPages - 5);
+  } else {
+    rollPages(secondElement - 5, secondElement - 1);
+  }
+}
+
+function rollPages(first, second) {
+  markup = '';
+  if (api.page === 1) {
+    markup += createCurrentPage(api.page);
+  } else {
+    markup += createLinksMarkup(1);
+  }
+
+  markup += createPrevPagesBtn();
+  reconfigurePagination(first, second);
+  markup += createNextPagesBtn();
+
+  if (api.page === totalPages) {
+    markup += createCurrentPage(totalPages);
+  } else {
+    markup += createLinksMarkup(totalPages);
+  }
+
+  refs.listPagination.innerHTML = '';
+  refs.listPagination.insertAdjacentHTML('beforeend', markup);
+
+  const getNextPagesRef = refs.listPagination.querySelector('[data-get="next"]');
+  const getPrevPagesRef = refs.listPagination.querySelector('[data-get="prev"]');
+
+  if (getNextPagesRef) {
+    getNextPagesRef.addEventListener('click', getNextPages);
+    getPrevPagesRef.disabled = false;
+  }
+
+  if (getPrevPagesRef) {
+    getPrevPagesRef.addEventListener('click', getPrevPages);
+    getNextPagesRef.disabled = false;
+  }
 }
 
 function reconfigurePagination(first, last) {
@@ -196,25 +263,25 @@ function reconfigurePagination(first, last) {
 
 function createNextPagesBtn() {
   return `<li class="pagination__item">
-          <button class="pagination__link" type="button" data-get="next">...</button>
+          <button class="pagination__link" type="button" data-get="next" disabled>...</button>
         </li>`;
 }
 
 function createPrevPagesBtn() {
   return `<li class="pagination__item">
-          <button class="pagination__link" type="button" data-get="prev">...</button>
+          <button class="pagination__link" type="button" data-get="prev" disabled>...</button>
         </li>`;
 }
 
 function createLinksMarkup(i) {
   return `<li class="pagination__item">
-          <a class="pagination__link" href="#">${i}</a>
+          <a class="pagination__link" href="#" data-pagination-link>${i}</a>
         </li>`;
 }
 
 function createCurrentPage(i) {
   return `<li class="pagination__item">
-          <span class="pagination__link pagination__active" href="#">${i}</span>
+          <span class="pagination__link pagination__active" href="#" data-pagination-link>${i}</span>
         </li>`;
 }
 
@@ -234,9 +301,9 @@ function renderPagination() {
   listFirstPage = 1;
   totalPages = storage.get('totalPages');
 
-  // if (totalPages > 500) {
-  //   totalPages = 500;
-  // }
+  if (totalPages > 500) {
+    totalPages = 500;
+  }
 
   if (totalPages <= 1) {
     hideButtons();
