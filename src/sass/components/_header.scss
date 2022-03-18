@@ -86,6 +86,8 @@
 .current {
   color: var(--accent-color);
 }
+
+
 .search {
   &__form {
     display: flex;
@@ -107,6 +109,7 @@
     outline: none;
     border: none;
     background-color: transparent;
+  
     &::placeholder {
       @include font(14px, 1.14, 400);
       color: var(--primary-white-color);
@@ -141,6 +144,11 @@
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.4, 1);
     margin-top: 4px;
   }
+}
+/* autocopmlete setting */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--primary-title-color) inset ;
+  -webkit-text-fill-color: var(--primary-white-color);
 }
 
 .search__fail {
