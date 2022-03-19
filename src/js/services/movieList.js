@@ -40,24 +40,47 @@ function resetView() {
 
 function prepareData(moviesList) {
   const allGenres = storage.get('genres');
-  return moviesList.map(
-    ({ id, title, poster_path, genre_ids, name, first_air_date, release_date, vote_average }) => {
-      const genres =
-        genre_ids
-          ?.filter(id => allGenres[id])
-          .map(id => allGenres[id])
-          .join(', ') || 'Genres are not specified';
-      const filmTitle = title || name;
-      const year = new Date(release_date || first_air_date).getFullYear() || '';
-      const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
-      let rating = '0.0';
-      if (vote_average) {
-        rating = vote_average === 10 ? '10.0' : String(vote_average).padEnd(3, '.0');
-      }
+  return moviesList.map(res => {
+    const {
+      id,
+      title,
+      original_title,
+      poster_path,
+      genre_ids,
+      name,
+      first_air_date,
+      release_date,
+      vote_average,
+      vote_count,
+      overview,
+      popularity,
+    } = res;
+    const genres =
+      genre_ids
+        ?.filter(id => allGenres[id])
+        .map(id => allGenres[id])
+        .join(', ') || 'Genres are not specified';
+    const filmTitle = title || name;
+    const year = new Date(release_date || first_air_date).getFullYear() || '';
+    const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
+    let rating = '0.0';
+    if (vote_average) {
+      rating = vote_average === 10 ? '10.0' : String(vote_average).padEnd(3, '.0');
+    }
 
-      return { id, filmTitle, poster, genres, year, rating };
-    },
-  );
+    return {
+      id,
+      filmTitle,
+      original_title,
+      poster,
+      genres,
+      year,
+      rating,
+      overview,
+      vote_count,
+      popularity,
+    };
+  });
 }
 
 function makeMovieList(array) {
