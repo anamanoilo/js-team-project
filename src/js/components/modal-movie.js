@@ -1,5 +1,4 @@
 import api from '../services/ApiService';
-import notFoundImg from '../img/not_found_ver.jpg';
 import { addToWatched, addToQueue } from './cardTemplate';
 import * as storage from '../services/localStorage';
 
@@ -10,7 +9,7 @@ const refs = {
   spinner: document.querySelector('.spinner'),
 };
 
-async function openModal(e) {
+function openModal(e) {
   e.preventDefault();
   if (e.target.tagName === 'UL') {
     return;
@@ -19,24 +18,21 @@ async function openModal(e) {
   refs.modal.classList.add('is-open');
   api.movieId = Number(e.target.closest('li').id);
   refs.closeBtn.addEventListener('click', closeModal);
-  try {
-    const {
-      id,
-      original_title,
-      genres,
-      poster_path,
-      overview,
-      title,
-      name,
-      vote_average,
-      popularity,
-      vote_count,
-    } = await api.fetchMovieDetails();
-    const filmTitle = title || name;
-    const movieGenres = genres.map(genre => genre.name).join(', ');
-    const poster = poster_path ? `https://image.tmdb.org/t/p/w500${poster_path}` : notFoundImg;
-    const rating = vote_average === 10 ? '10.0' : String(vote_average).padEnd(3, '.0');
-    const markup = `
+  const moviesData = storage.get('moviesData');
+  const movie = moviesData.find(movie => movie.id === api.movieId);
+  const {
+    poster,
+    filmTitle,
+    rating,
+    vote_count,
+    popularity,
+    original_title,
+    genres,
+    overview,
+    id,
+  } = movie;
+
+  const markup = `
             <img src="${poster}" alt="${filmTitle}" class="modal__movie-img" />
 
             <div class="modal__wrapper-descriptor" >
@@ -52,11 +48,11 @@ async function openModal(e) {
                   <span class="modal__votes">Popularity</span>${popularity}
                 </li>
                 <li class="modal__list-original-title">
-                  <span class="modal__votes">Original Title</span>${original_title}
+                  <span class="modal__votes">Original Title</span>${original_title || 'Not found'}
                 </li>
                 <li class="modal__list-genre">
                   <span class="modal__votes">Genre</span>
-                  <span class="modal__votes-data">${movieGenres}</span>
+                  <span class="modal__votes-data">${genres}</span>
                 </li>
               </ul>
               <h3 class="modal__title-description">about</h3>
@@ -74,24 +70,19 @@ async function openModal(e) {
             
           
   `;
-    refs.innerModal.insertAdjacentHTML('afterbegin', markup);
+  refs.innerModal.insertAdjacentHTML('afterbegin', markup);
 
-    const watchedRef = document.querySelector('[data-watched]');
-    const queueRef = document.querySelector('[data-queue]');
+  const watchedRef = document.querySelector('[data-watched]');
+  const queueRef = document.querySelector('[data-queue]');
 
-    nameButton('watched', watchedRef, id);
-    nameButton('queue', queueRef, id);
+  nameButton('watched', watchedRef, id);
+  nameButton('queue', queueRef, id);
 
-    watchedRef.addEventListener('click', addToWatched);
-    queueRef.addEventListener('click', addToQueue);
+  watchedRef.addEventListener('click', addToWatched);
+  queueRef.addEventListener('click', addToQueue);
 
-    document.body.style.overflow = 'hidden';
-    refs.spinner.classList.add('visually-hidden');
-  } catch (err) {
-    refs.innerModal.innerHTML = 'Sorry, there is no additional info about this film';
-    refs.spinner.classList.add('visually-hidden');
-    console.error(err.message);
-  }
+  document.body.style.overflow = 'hidden';
+  refs.spinner.classList.add('visually-hidden');
 }
 
 function closeModal(e) {

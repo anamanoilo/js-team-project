@@ -97,13 +97,11 @@
     @include mq(tablet) {
       width: 264px;
       height: 370px;
-      object-fit: cover;
     }
 
     @include mq(desktop) {
       width: 396px;
       height: 477px;
-      object-fit: cover;
     }
   }
 
