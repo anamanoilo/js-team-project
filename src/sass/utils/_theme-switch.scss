@@ -1,6 +1,6 @@
 .dark-theme {
-  background-color:#333;
-  & .movies__name{
+  background-color: #333;
+  & .movies__name {
     color: var(--primary-white-color);
   }
   & .pagination__link {
@@ -19,32 +19,29 @@
     background-color: rgb(47, 45, 45);
     color: var(--primary-white-color);
   }
-  & .modal__frame{
-  background-color: #333;
+  & .modal__frame {
+    background-color: #333;
   }
-  & .close-modal{
-     fill:  var(--primary-white-color);
+  & .close-modal {
+    fill: var(--primary-white-color);
   }
-  & .modal__movie-title{
+  & .modal__movie-title {
     color: var(--primary-white-color);
   }
-  & .modal__list-movie-indicators{
+  & .modal__list-movie-indicators {
     color: var(--primary-white-color);
   }
-  & .modal__title-description{
+  & .modal__title-description {
     color: var(--primary-white-color);
   }
-  & .modal__description{
+  & .modal__description {
     color: var(--primary-white-color);
   }
   & .current-btn.modal__btn {
-      background-color: var(--modal-btn-color);
+    background-color: var(--modal-btn-color);
   }
   & .modal__btn {
-    background-color:var(--primary-white-color);
-  }
-  & .pagination__link:hover{
-    color: var(--primary-title-color);
+    background-color: var(--primary-white-color);
   }
 }
 

@@ -1,5 +1,5 @@
 import api from '../services/ApiService';
-import { addToWatched, addToQueue } from './cardTemplate';
+import { addToWatched, addToQueue } from '../services/saveMoviesToLibrary';
 import * as storage from '../services/localStorage';
 
 const refs = {
