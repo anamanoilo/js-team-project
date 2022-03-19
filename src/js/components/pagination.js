@@ -123,23 +123,27 @@ async function onNumberClick(e) {
 function isFirstPage() {
   if (api.page === 1) {
     refs.prevBtn.disabled = true;
+    refs.prevBtn.classList.add('pagination__disabled');
   } else {
     refs.prevBtn.disabled = false;
+    refs.prevBtn.classList.remove('pagination__disabled');
   }
 }
 
 function isLastPage() {
   if (api.page === totalPages) {
     refs.nextBtn.disabled = true;
+    refs.nextBtn.classList.add('pagination__disabled');
   } else {
     refs.nextBtn.disabled = false;
+    refs.nextBtn.classList.remove('pagination__disabled');
   }
 }
 
 function createList(first, last) {
   markup = '';
 
-  if (totalPages <= 10) {
+  if (totalPages <= 5) {
     reconfigurePagination(first, last);
     refs.listPagination.innerHTML = '';
     refs.listPagination.insertAdjacentHTML('beforeend', markup);
@@ -147,7 +151,7 @@ function createList(first, last) {
   }
 
   if (api.page > 3) {
-    markup += createLinksMarkup(1);
+    markup += createAdditionalPage(1);
     markup += createPrevPagesBtn();
   }
 
@@ -155,7 +159,7 @@ function createList(first, last) {
 
   if (totalPages - api.page > 2) {
     markup += createNextPagesBtn();
-    markup += createLinksMarkup(totalPages);
+    markup += createAdditionalPage(totalPages);
   }
 
   refs.listPagination.innerHTML = '';
@@ -183,8 +187,12 @@ function getNextPages() {
   let nextRoll = totalPages - lastElement;
 
   if (nextRoll <= 6) {
+    if (nextRoll <= 1) {
+      getNextPagesRef.disabled = true;
+      return;
+    }
+
     rollPages(totalPages - 5, totalPages - 1);
-    getNextPagesRef.disabled = true;
     return;
   }
 
@@ -204,8 +212,12 @@ function getPrevPages() {
   let nextRoll = lastElement - 5;
 
   if (nextRoll <= 5) {
+    if (nextRoll === 1) {
+      getPrevPagesRef.disabled = true;
+      return;
+    }
+
     rollPages(listFirstPage + 1, listFirstPage + 5);
-    getPrevPagesRef.disabled = true;
     return;
   }
 
@@ -218,10 +230,11 @@ function getPrevPages() {
 
 function rollPages(first, second) {
   markup = '';
+
   if (api.page === 1) {
-    markup += createCurrentPage(api.page);
+    markup += createAdditionalActive(api.page);
   } else {
-    markup += createLinksMarkup(1);
+    markup += createAdditionalPage(1);
   }
 
   markup += createPrevPagesBtn();
@@ -229,9 +242,9 @@ function rollPages(first, second) {
   markup += createNextPagesBtn();
 
   if (api.page === totalPages) {
-    markup += createCurrentPage(totalPages);
+    markup += createAdditionalActive(totalPages);
   } else {
-    markup += createLinksMarkup(totalPages);
+    markup += createAdditionalPage(totalPages);
   }
 
   refs.listPagination.innerHTML = '';
@@ -263,19 +276,31 @@ function reconfigurePagination(first, last) {
 
 function createNextPagesBtn() {
   return `<li class="pagination__item">
-          <button class="pagination__link" type="button" data-get="next" disabled>...</button>
+          <button class="pagination__roll" type="button" data-get="next" disabled>...</button>
         </li>`;
 }
 
 function createPrevPagesBtn() {
   return `<li class="pagination__item">
-          <button class="pagination__link" type="button" data-get="prev" disabled>...</button>
+          <button class="pagination__roll" type="button" data-get="prev" disabled>...</button>
         </li>`;
 }
 
 function createLinksMarkup(i) {
   return `<li class="pagination__item">
           <a class="pagination__link" href="#" data-pagination-link>${i}</a>
+        </li>`;
+}
+
+function createAdditionalPage(i) {
+  return `<li class="pagination__item">
+          <a class="pagination__page" href="#">${i}</a>
+        </li>`;
+}
+
+function createAdditionalActive(i) {
+  return `<li class="pagination__item">
+          <span class="pagination__page pagination__active" href="#">${i}</span>
         </li>`;
 }
 
