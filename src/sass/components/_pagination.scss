@@ -9,6 +9,18 @@
   height: 40px;
   margin-top: 45px;
 
+  &__list {
+    display: flex;
+  }
+
+  &__item:not(:last-child) {
+    @include mq(mobile-only) {
+      margin-right: 0;
+    }
+    margin-right: 5px;
+  }
+
+  &__page,
   &__link {
     display: flex;
     align-items: center;
@@ -23,7 +35,14 @@
     transition: background-color 250ms linear;
 
     &:hover {
-      background-color: var(--button-bg-color);
+      background-color: var(--accent-color);
+      color: var(--primary-white-color);
+    }
+  }
+
+  &__page {
+    @include mq(mobile-only) {
+      display: none;
     }
   }
 
@@ -31,9 +50,22 @@
     background-color: var(--accent-color);
     color: var(--primary-white-color);
     border-radius: 5px;
-    &:hover {
-      background-color: var(--accent-color);
+  }
+
+  &__roll {
+    @include mq(mobile-only) {
+      display: none;
     }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+
+    font-size: 12px;
+    line-height: 1.33;
+    color: var(--primary-title-color);
+    border-radius: 5px;
   }
 
   &__btn-next,
@@ -47,19 +79,17 @@
     background-color: var(--button-bg-color);
   }
 
+  &__disabled {
+    opacity: 0.4;
+    fill: rgb(109, 106, 106);
+    color: rgb(109, 106, 106);
+  }
+
   &__btn-prev {
     margin-right: 5px;
   }
 
   &__btn-next {
     margin-left: 5px;
-  }
-
-  &__list {
-    display: flex;
-  }
-
-  &__item:not(:last-child) {
-    margin-right: 5px;
   }
 }
