@@ -15,7 +15,7 @@ function saveMovie(storageKey, e) {
     }
   }
 
-  savedMovies.push(object);
+  savedMovies.unshift(object);
   storage.save(storageKey, savedMovies);
   e.target.textContent = `Remove from ${storageKey}`;
 }
