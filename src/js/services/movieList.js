@@ -9,13 +9,12 @@ const refs = {
   spinner: document.querySelector('.spinner'),
 };
 
-onLoading();
-
-renderPagination();
+onLoading().then(renderPagination);
 
 async function onLoading() {
   try {
     refs.spinner.classList.remove('visually-hidden');
+    api.searchQuery = '';
     const movies = await api.fetchTrendingMovies();
     storage.save('totalPages', movies.total_pages);
     const moviesDatalist = prepareData(movies.results);
