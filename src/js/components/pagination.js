@@ -30,6 +30,8 @@ async function nextPageBtn() {
     await onLoading();
   }
 
+  scrollToTop();
+
   const nextPagination = totalPages - api.page;
 
   if (totalPages <= 5) {
@@ -83,6 +85,8 @@ async function prevPageBtn() {
   } else {
     await onLoading();
   }
+
+  scrollToTop();
 
   const nextPagination = totalPages - api.page;
 
@@ -142,6 +146,8 @@ async function onNumberClick(e) {
     } else {
       await onLoading();
     }
+
+    scrollToTop();
 
     const nextPagination = totalPages - api.page;
 
@@ -406,6 +412,10 @@ function showButtons() {
 
 function hideButtons() {
   refs.pagination.classList.add('is-hidden');
+}
+
+function scrollToTop() {
+  refs.list.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
 //Перевірка на кількість сторінок, залежно від кількості відобразиться 5 чи менше
